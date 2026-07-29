@@ -1,0 +1,44 @@
+---
+import { jigokuNozokiLocation } from '../data/site';
+---
+
+<footer class="bg-[#121b16] text-white">
+  <div class="container-shell py-16 md:py-20">
+    <div class="grid gap-12 border-b border-white/12 pb-14 lg:grid-cols-[1fr_auto] lg:items-end">
+      <div>
+        <p class="text-xs tracking-[.25em] text-[#d7b675]">JIGOKU NOZOKI</p>
+        <h2 class="mt-4 font-serif text-4xl font-medium md:text-5xl">地獄のぞき</h2>
+        <p class="mt-4 max-w-lg text-sm leading-7 text-white/55">
+          千葉県・鋸山、日本寺境内にある絶景展望台の非公式旅行案内です。運営状況・料金・通行情報は、訪問前に各公式サイトでご確認ください。
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a href="https://www.nihonji.jp/" target="_blank" rel="noreferrer" class="rounded-full border border-white/20 px-5 py-3 text-sm text-white/70 transition hover:bg-white hover:text-forest">日本寺 公式 ↗</a>
+        <a href="https://www.mt-nokogiri.co.jp/" target="_blank" rel="noreferrer" class="rounded-full border border-white/20 px-5 py-3 text-sm text-white/70 transition hover:bg-white hover:text-forest">鋸山ロープウェー ↗</a>
+        <a href={jigokuNozokiLocation.googleMapsUrl} target="_blank" rel="noreferrer" class="rounded-full bg-vermilion px-5 py-3 text-sm font-semibold transition hover:bg-[#934235]">Google マップ</a>
+      </div>
+    </div>
+
+    <div class="grid gap-8 py-10 text-xs leading-6 text-white/42 md:grid-cols-2">
+      <div>
+        <p class="font-semibold text-white/65">写真について</p>
+        <p class="mt-2">
+          掲載写真は Wikimedia Commons の Creative Commons ライセンス作品を使用し、ウェブ表示用に縮小・トリミングしています。
+          詳細な著作者・ライセンス情報は <a class="underline underline-offset-4 hover:text-white" href="/photo-credits">写真クレジット</a> をご覧ください。
+        </p>
+      </div>
+      <div>
+        <p class="font-semibold text-white/65">情報更新</p>
+        <p class="mt-2">拝観時間・料金・ロープウェー運賃は公式情報をもとに随時確認しています。天候や施設都合により変更される場合があるため、訪問前に各公式サイトをご確認ください。</p>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-3 border-t border-white/10 pt-6 text-[11px] tracking-wide text-white/35 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {new Date().getFullYear()} JigokuNozoki.com</p>
+      <div class="flex gap-5">
+        <a href="/photo-credits" class="hover:text-white">写真クレジット</a>
+        <a href="/privacy" class="hover:text-white">プライバシー</a>
+      </div>
+    </div>
+  </div>
+</footer>

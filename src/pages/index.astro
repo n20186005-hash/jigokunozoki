@@ -1,0 +1,312 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import VisitPlanner from '../components/VisitPlanner.astro';
+import CostCalculator from '../components/CostCalculator.astro';
+import FAQ from '../components/FAQ.astro';
+import Footer from '../components/Footer.astro';
+import { faqItems, highlights, jigokuNozokiLocation } from '../data/site';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+};
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+
+  <Header />
+  <main id="main">
+    <Hero />
+
+    <section id="about" class="section-space overflow-hidden">
+      <div class="container-shell">
+        <div class="grid gap-12 lg:grid-cols-[.88fr_1.12fr] lg:items-center lg:gap-24">
+          <div class="reveal relative">
+            <div class="image-frame aspect-[4/5] max-h-[720px]">
+              <img
+                src="/images/nokogiriyama-view.webp"
+                alt="鋸山山頂から見渡す金谷の町、東京湾、遠くの富士山"
+                loading="lazy"
+                width="1200"
+                height="1600"
+                class="object-[50%_45%]"
+              />
+            </div>
+            <div class="absolute -bottom-7 -right-4 border border-ink/10 bg-washi p-5 shadow-soft sm:-right-8 sm:p-7">
+              <p class="vertical-label font-serif text-sm leading-loose text-ink/65">海と山を見渡す<br />房総の空</p>
+            </div>
+          </div>
+
+          <div class="reveal" style="transition-delay: 100ms">
+            <span class="eyebrow">About the cliff</span>
+            <h2 class="display-title text-4xl md:text-6xl">
+              足もとに広がる、<br />静かな地獄。
+            </h2>
+            <p class="mt-7 font-serif text-xl leading-9 text-ink/78 md:text-2xl md:leading-10">
+              地獄のぞきは、鋸山の石切り場跡から張り出した岩盤の上に設けられた展望台です。
+            </p>
+            <div class="mt-7 space-y-5 text-sm leading-8 text-ink/62 md:text-base">
+              <p>
+                眼下には房総半島の深い森。振り返れば東京湾と金谷の町。晴れて空気が澄む日には、海の向こうに富士山や三浦半島を望めます。
+              </p>
+              <p>
+                写真で見る印象とは異なり、ここは日本寺の広大な境内の一部です。百尺観音、千五百羅漢、大仏へと続く石段を歩くことで、鋸山の景観と信仰の歴史が一つにつながります。
+              </p>
+            </div>
+
+            <dl class="mt-9 grid grid-cols-2 gap-px border border-ink/10 bg-ink/10 sm:grid-cols-4">
+              <div class="bg-washi p-4">
+                <dt class="text-[10px] tracking-[.16em] text-ink/45">鋸山標高</dt>
+                <dd class="mt-1 font-serif text-2xl">329m</dd>
+              </div>
+              <div class="bg-washi p-4">
+                <dt class="text-[10px] tracking-[.16em] text-ink/45">境内面積</dt>
+                <dd class="mt-1 font-serif text-2xl">10万坪余</dd>
+              </div>
+              <div class="bg-washi p-4">
+                <dt class="text-[10px] tracking-[.16em] text-ink/45">開山</dt>
+                <dd class="mt-1 font-serif text-2xl">約1300年前</dd>
+              </div>
+              <div class="bg-washi p-4">
+                <dt class="text-[10px] tracking-[.16em] text-ink/45">おすすめ滞在</dt>
+                <dd class="mt-1 font-serif text-2xl">2–3時間</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-space border-y border-ink/10 bg-[#e8e0d2]">
+      <div class="container-shell">
+        <div class="mx-auto max-w-3xl text-center reveal">
+          <span class="eyebrow">Three landscapes</span>
+          <h2 class="display-title text-4xl md:text-5xl">岩と祈りをめぐる。</h2>
+          <p class="mx-auto mt-5 max-w-2xl text-sm leading-8 text-ink/60 md:text-base">
+            地獄のぞきだけで帰るのは、少し惜しい。山頂から大仏広場へ、鋸山ならではの三つの景観を訪ねてください。
+          </p>
+        </div>
+
+        <div class="mt-14 grid gap-7 lg:grid-cols-3">
+          {highlights.map((item, index) => (
+            <article class="reveal bg-washi" style={`transition-delay: ${index * 90}ms`}>
+              <div class="image-frame aspect-[4/5]">
+                <img
+                  src={item.image}
+                  alt={item.alt}
+                  loading="lazy"
+                  width="1400"
+                  height="1050"
+                  style={`object-position:${item.objectPosition ?? '50% 50%'}`}
+                />
+                <span class="absolute left-4 top-4 rounded-full bg-forest/85 px-3 py-1 text-[10px] tracking-wider text-white backdrop-blur">{item.meta}</span>
+              </div>
+              <div class="p-6 md:p-7">
+                <p class="text-[10px] tracking-[.2em] text-vermilion">{item.kana}</p>
+                <h3 class="mt-2 font-serif text-2xl font-medium">{item.title}</h3>
+                <p class="mt-4 text-sm leading-7 text-ink/60">{item.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <VisitPlanner />
+    <CostCalculator />
+
+    <section id="course" class="section-space overflow-hidden">
+      <div class="container-shell">
+        <div class="grid gap-12 lg:grid-cols-[.75fr_1.25fr] lg:gap-20">
+          <div class="reveal">
+            <span class="eyebrow">Suggested course</span>
+            <h2 class="display-title text-4xl md:text-5xl">初めてなら、<br />90分の山頂散歩。</h2>
+            <p class="mt-6 max-w-md text-sm leading-8 text-ink/60 md:text-base">
+              ロープウェーで往復し、百尺観音と地獄のぞきに絞る軽量コース。大仏まで下らないため、登り返しを抑えられます。
+            </p>
+            <div class="mt-8 inline-flex items-center gap-3 rounded-full border border-ink/12 bg-white/55 px-5 py-3 text-sm">
+              <span class="size-2 rounded-full bg-vermilion"></span>
+              所要時間 約60〜90分
+            </div>
+          </div>
+
+          <ol class="reveal relative space-y-0 border-l border-ink/15 pl-7 md:pl-10" style="transition-delay: 100ms">
+            {[ 
+              ['00', '鋸山ロープウェー山頂駅', '東京湾の眺めを楽しみ、歩きやすい靴と飲み物を確認。'],
+              ['15', '日本寺 西口管理所', '拝観券を購入。ロープウェー券とは別料金です。'],
+              ['25', '百尺観音', '階段の手前を左へ。切り立つ岩壁と観音像を見上げます。'],
+              ['40', '地獄のぞき', '急な階段を上り、山頂展望台へ。混雑時は待ち時間を見込みます。'],
+              ['65', '山頂展望台・帰路', '海側の景色も眺め、余裕を持ってロープウェー駅へ戻ります。'],
+            ].map(([minute, title, description], index) => (
+              <li class="relative border-b border-ink/10 py-7 first:pt-0 last:border-0">
+                <span class="absolute -left-[2.18rem] top-8 grid size-4 place-items-center rounded-full border-4 border-washi bg-vermilion md:-left-[2.72rem]"></span>
+                <div class="grid gap-3 sm:grid-cols-[72px_1fr] sm:gap-6">
+                  <div>
+                    <span class="text-[10px] tracking-wider text-ink/40">START +</span>
+                    <p class="font-serif text-2xl text-vermilion">{minute}<span class="ml-1 text-xs">分</span></p>
+                  </div>
+                  <div>
+                    <h3 class="font-serif text-xl font-medium">{index + 1}. {title}</h3>
+                    <p class="mt-2 text-sm leading-7 text-ink/58">{description}</p>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div class="kamon-divider mt-16">
+          <svg viewBox="0 0 40 40" class="size-8" aria-hidden="true"><circle cx="20" cy="20" r="15" fill="none" stroke="currentColor"/><path d="M20 7v26M7 20h26M11 11l18 18M29 11 11 29" stroke="currentColor"/></svg>
+        </div>
+
+        <div class="mt-16 grid gap-8 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
+          <div class="reveal image-frame aspect-[16/10]">
+            <img
+              src="/images/jigoku-nozoki-hero.webp"
+              alt="横から見た地獄のぞきの岩場と展望柵"
+              loading="lazy"
+              width="2200"
+              height="1650"
+              class="object-[50%_46%]"
+            />
+          </div>
+          <div class="reveal lg:pl-8" style="transition-delay: 100ms">
+            <span class="eyebrow">Photo tips</span>
+            <h2 class="display-title text-4xl">断崖らしさを、<br />一枚に。</h2>
+            <ul class="mt-7 space-y-5 text-sm leading-7 text-ink/62 md:text-base">
+              <li class="flex gap-4"><span class="font-serif text-vermilion">一</span><span>同行者に側面の展望場所から撮ってもらうと、張り出した岩の形が伝わります。</span></li>
+              <li class="flex gap-4"><span class="font-serif text-vermilion">二</span><span>スマートフォンの2倍前後を使うと、人物と崖の輪郭をすっきりまとめられます。</span></li>
+              <li class="flex gap-4"><span class="font-serif text-vermilion">三</span><span>柵から身を乗り出さず、前後の人と譲り合って短時間で撮影しましょう。</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="info" class="section-space bg-[#d8cebb]">
+      <div class="container-shell">
+        <div class="grid gap-12 lg:grid-cols-[.8fr_1.2fr] lg:gap-20">
+          <div class="reveal">
+            <span class="eyebrow">Visitor information</span>
+            <h2 class="display-title text-4xl md:text-5xl">拝観前に、<br />確認すること。</h2>
+            <p class="mt-6 max-w-md text-sm leading-8 text-ink/62 md:text-base">
+              山の天候、ロープウェーの運行、日本寺の最終入場は別々に確認するのが安心です。
+            </p>
+          </div>
+
+          <div class="reveal grid gap-px border border-ink/12 bg-ink/12 sm:grid-cols-2" style="transition-delay: 100ms">
+            <div class="bg-[#eee8dc] p-6 md:p-8">
+              <p class="text-[10px] tracking-[.18em] text-vermilion">OPENING HOURS</p>
+              <h3 class="mt-3 font-serif text-2xl">日本寺 拝観時間</h3>
+              <p class="mt-5 font-serif text-4xl">9:00–16:00</p>
+              <p class="mt-2 text-sm text-ink/55">最終入場 15:00</p>
+            </div>
+            <div class="bg-[#eee8dc] p-6 md:p-8">
+              <p class="text-[10px] tracking-[.18em] text-vermilion">ADMISSION</p>
+              <h3 class="mt-3 font-serif text-2xl">日本寺 拝観料</h3>
+              <div class="mt-5 flex items-end justify-between border-b border-ink/10 pb-3"><span class="text-sm text-ink/55">大人</span><strong class="font-serif text-3xl font-medium">700円</strong></div>
+              <div class="mt-3 flex items-end justify-between"><span class="text-sm text-ink/55">小人</span><strong class="font-serif text-3xl font-medium">400円</strong></div>
+            </div>
+            <div class="bg-[#eee8dc] p-6 md:p-8">
+              <p class="text-[10px] tracking-[.18em] text-vermilion">FOOTWEAR</p>
+              <h3 class="mt-3 font-serif text-2xl">歩きやすい靴で</h3>
+              <p class="mt-4 text-sm leading-7 text-ink/58">境内は階段が多く、一部に歩きづらい場所があります。雨の後は特に滑りにくい靴がおすすめです。</p>
+            </div>
+            <div class="bg-[#eee8dc] p-6 md:p-8">
+              <p class="text-[10px] tracking-[.18em] text-vermilion">FACILITIES</p>
+              <h3 class="mt-3 font-serif text-2xl">山内の設備</h3>
+              <p class="mt-4 text-sm leading-7 text-ink/58">日本寺境内の公衆トイレは大仏広場下の1か所。山頂駅や山麓駅の設備も先に利用すると安心です。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-12 grid gap-6 md:grid-cols-3">
+          <a href="https://www.nihonji.jp/%E6%8B%9D%E8%A6%B3%E6%99%82%E9%96%93-%E6%96%99%E9%87%91/" target="_blank" rel="noreferrer" class="group border border-ink/12 bg-[#eee8dc] p-6 transition hover:-translate-y-1 hover:shadow-soft">
+            <span class="text-[10px] tracking-[.15em] text-ink/45">OFFICIAL 01</span>
+            <div class="mt-4 flex items-center justify-between gap-4"><strong class="font-serif text-xl font-medium">日本寺 拝観案内</strong><span class="transition group-hover:translate-x-1">↗</span></div>
+          </a>
+          <a href="https://www.mt-nokogiri.co.jp/pc/p040000.php" target="_blank" rel="noreferrer" class="group border border-ink/12 bg-[#eee8dc] p-6 transition hover:-translate-y-1 hover:shadow-soft">
+            <span class="text-[10px] tracking-[.15em] text-ink/45">OFFICIAL 02</span>
+            <div class="mt-4 flex items-center justify-between gap-4"><strong class="font-serif text-xl font-medium">ロープウェー運行</strong><span class="transition group-hover:translate-x-1">↗</span></div>
+          </a>
+          <a href={jigokuNozokiLocation.googleMapsUrl} target="_blank" rel="noreferrer" class="group border border-ink/12 bg-forest p-6 text-white transition hover:-translate-y-1 hover:shadow-soft">
+            <span class="text-[10px] tracking-[.15em] text-white/45">MAP</span>
+            <div class="mt-4 flex items-center justify-between gap-4"><strong class="font-serif text-xl font-medium">地獄のぞきを開く</strong><span class="transition group-hover:translate-x-1">↗</span></div>
+          </a>
+        </div>
+
+        <div class="reveal mt-12 overflow-hidden border border-ink/12 bg-[#eee8dc]">
+          <div class="grid lg:grid-cols-[.72fr_1.28fr]">
+            <div class="flex flex-col justify-center p-7 md:p-10">
+              <span class="eyebrow">Location</span>
+              <h3 class="mt-4 font-serif text-3xl font-medium">地獄のぞき 所在地</h3>
+              <address class="mt-6 not-italic text-sm leading-7 text-ink/62 md:text-base">
+                <span class="block font-medium text-ink/80">{jigokuNozokiLocation.fullAddress}</span>
+                <span class="block">{jigokuNozokiLocation.locationNote}</span>
+              </address>
+              <p class="mt-4 text-xs leading-6 text-ink/48">
+                山中の展望台です。車で直接到着する地点ではないため、ロープウェー・各管理所から徒歩で向かいます。
+              </p>
+              <a
+                href={jigokuNozokiLocation.googleMapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                class="mt-7 inline-flex w-fit items-center gap-2 border-b border-ink/35 pb-1 text-sm font-semibold text-ink/72 transition hover:border-vermilion hover:text-vermilion"
+              >
+                Google マップで開く <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+
+            <div class="relative min-h-[360px] border-t border-ink/12 lg:min-h-[460px] lg:border-l lg:border-t-0">
+              <iframe
+                src={jigokuNozokiLocation.googleMapsEmbedUrl}
+                title="地獄のぞき（鋸山 日本寺）の地図"
+                width="600"
+                height="450"
+                class="absolute inset-0 h-full w-full border-0"
+                allowfullscreen
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <FAQ />
+  </main>
+  <Footer />
+
+  <script>
+    const revealElements = document.querySelectorAll<HTMLElement>('.reveal');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+      revealElements.forEach((element) => element.classList.add('is-visible'));
+    } else {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px' });
+
+      revealElements.forEach((element) => observer.observe(element));
+    }
+  </script>
+</BaseLayout>

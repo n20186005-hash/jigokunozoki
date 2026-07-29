@@ -1,0 +1,203 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #17211c;
+  --color-moss: #263d32;
+  --color-forest: #1b2922;
+  --color-stone: #6d7068;
+  --color-washi: #f4f0e7;
+  --color-sand: #ded4c0;
+  --color-vermilion: #a84d3f;
+  --color-gold: #b99854;
+  --font-sans: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+  --font-serif: "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+  --shadow-soft: 0 20px 60px rgba(23, 33, 28, 0.12);
+}
+
+:root {
+  color-scheme: light;
+  --header-height: 76px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--color-washi);
+}
+
+body {
+  margin: 0;
+  color: var(--color-ink);
+  background:
+    radial-gradient(circle at 15% 12%, rgba(185, 152, 84, 0.08), transparent 28rem),
+    linear-gradient(180deg, #f7f3eb 0%, #f1ede4 100%);
+  font-family: var(--font-sans);
+  line-height: 1.75;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  content: "";
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+::selection {
+  color: white;
+  background: var(--color-vermilion);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(168, 77, 63, 0.55);
+  outline-offset: 4px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 200;
+  padding: 0.75rem 1rem;
+  color: white;
+  background: var(--color-forest);
+  transform: translateY(-200%);
+  transition: transform 180ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.container-shell {
+  width: min(1180px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.section-space {
+  padding-block: clamp(5rem, 9vw, 9rem);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+  color: var(--color-vermilion);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  width: 2rem;
+  height: 1px;
+  content: "";
+  background: currentColor;
+}
+
+.display-title {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.22;
+}
+
+.vertical-label {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 0.24em;
+}
+
+.paper-card {
+  border: 1px solid rgba(23, 33, 28, 0.12);
+  background: rgba(255, 253, 247, 0.72);
+  backdrop-filter: blur(12px);
+}
+
+.image-frame {
+  position: relative;
+  overflow: hidden;
+  background: #d9d3c7;
+}
+
+.image-frame::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+}
+
+.image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 700ms cubic-bezier(.2,.8,.2,1);
+}
+
+.image-frame:hover img {
+  transform: scale(1.035);
+}
+
+.kamon-divider {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  color: rgba(23,33,28,.35);
+}
+
+.kamon-divider::before,
+.kamon-divider::after {
+  flex: 1;
+  height: 1px;
+  content: "";
+  background: currentColor;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

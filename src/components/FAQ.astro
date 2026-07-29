@@ -1,0 +1,32 @@
+---
+import { faqItems } from '../data/site';
+---
+
+<section id="faq" class="section-space bg-[#f8f5ee]">
+  <div class="container-shell grid gap-12 lg:grid-cols-[.72fr_1.28fr] lg:gap-20">
+    <div class="reveal">
+      <span class="eyebrow">Before you go</span>
+      <h2 class="display-title text-4xl md:text-5xl">よくある質問</h2>
+      <p class="mt-6 max-w-sm text-sm leading-8 text-ink/60 md:text-base">
+        山の中にある景勝地だからこそ、服装・時間・入口選びが大切です。
+      </p>
+    </div>
+
+    <div class="reveal divide-y divide-ink/12 border-t border-ink/12" style="transition-delay: 100ms">
+      {faqItems.map((item, index) => (
+        <details class="group py-1" open={index === 0}>
+          <summary class="flex cursor-pointer list-none items-start justify-between gap-5 py-5 font-serif text-lg font-medium marker:hidden md:text-xl">
+            <span class="flex gap-4">
+              <span class="pt-0.5 text-xs font-sans tracking-wider text-vermilion">Q{String(index + 1).padStart(2, '0')}</span>
+              <span>{item.question}</span>
+            </span>
+            <span class="grid size-7 shrink-0 place-items-center rounded-full border border-ink/20 text-sm transition group-open:rotate-45" aria-hidden="true">＋</span>
+          </summary>
+          <div class="pb-6 pl-11 pr-10 text-sm leading-8 text-ink/65 md:text-base">
+            <p>{item.answer}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

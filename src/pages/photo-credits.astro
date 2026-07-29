@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const credits = [
+  {
+    title: '地獄のぞき（2024年撮影）',
+    file: 'Jigoku-nozoki-Mount Nokogiri-11-24.jpg',
+    author: 'ערן',
+    license: 'CC BY-SA 4.0',
+    fileUrl: 'https://commons.wikimedia.org/wiki/File:Jigoku-nozoki-Mount_Nokogiri-11-24.jpg',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+    usage: 'メインビジュアル、コース・撮影案内、OG画像。縮小・トリミング。',
+  },
+  {
+    title: '百尺観音',
+    file: 'Hyaku-shaku Kannon.jpg',
+    author: 'Dandy1022',
+    license: 'CC BY-SA 4.0',
+    fileUrl: 'https://commons.wikimedia.org/wiki/File:Hyaku-shaku_Kannon.jpg',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+    usage: '見どころ紹介。縮小・トリミング。',
+  },
+  {
+    title: '日本寺大仏',
+    file: 'Nihonji daibutsu.jpg',
+    author: 'Emily Zarndt',
+    license: 'CC BY-SA 3.0',
+    fileUrl: 'https://commons.wikimedia.org/wiki/File:Nihonji_daibutsu.jpg',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/',
+    usage: '見どころ紹介。縮小・トリミング。',
+  },
+  {
+    title: '鋸山ロープウェー',
+    file: 'View of Nokogiriyama Ropeway, crossing.jpg',
+    author: '掬茶',
+    license: 'CC BY-SA 3.0',
+    fileUrl: 'https://commons.wikimedia.org/wiki/File:View_of_Nokogiriyama_Ropeway,_crossing.jpg',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/',
+    usage: 'アクセス案内。縮小・トリミング。',
+  },
+  {
+    title: '鋸山山頂から望む金谷と富士山',
+    file: 'Futtsu city as seen from summit of Nokogiriyama.jpg',
+    author: 'Ineshima',
+    license: 'CC BY-SA 4.0',
+    fileUrl: 'https://commons.wikimedia.org/wiki/File:Futtsu_city_as_seen_from_summit_of_Nokogiriyama.jpg',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+    usage: '地獄のぞき紹介。縮小・トリミング。',
+  },
+  {
+    title: '鋸山の採石場跡',
+    file: 'Ruins of Nokogiriyama Quarry.jpg',
+    author: 'Dandy1022',
+    license: 'CC BY-SA 4.0',
+    fileUrl: 'https://commons.wikimedia.org/wiki/File:Ruins_of_Nokogiriyama_Quarry.jpg',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+    usage: '見どころ紹介。縮小・トリミング。',
+  },
+];
+---
+
+<BaseLayout title="写真クレジット｜地獄のぞき" description="JigokuNozoki.comで使用している写真の著作者とCreative Commonsライセンス情報。" canonical="/photo-credits">
+  <Header />
+  <main id="main" class="min-h-screen bg-washi pb-24 pt-36">
+    <div class="container-shell max-w-4xl">
+      <span class="eyebrow">Photo credits</span>
+      <h1 class="display-title text-4xl md:text-6xl">写真クレジット</h1>
+      <p class="mt-6 max-w-2xl text-sm leading-8 text-ink/62 md:text-base">
+        当サイトでは、Wikimedia Commonsで公開されているCreative Commonsライセンス作品を使用しています。表示速度に合わせて縮小し、一部は掲載枠に合わせてトリミングしています。
+      </p>
+
+      <div class="mt-12 divide-y divide-ink/12 border-y border-ink/12">
+        {credits.map((credit, index) => (
+          <article class="grid gap-4 py-7 md:grid-cols-[48px_1fr_auto] md:items-start md:gap-6">
+            <span class="font-serif text-2xl text-vermilion">{String(index + 1).padStart(2, '0')}</span>
+            <div>
+              <h2 class="font-serif text-xl font-medium">{credit.title}</h2>
+              <dl class="mt-3 grid gap-1 text-sm leading-7 text-ink/60">
+                <div><dt class="inline font-semibold text-ink/75">原題：</dt><dd class="inline">{credit.file}</dd></div>
+                <div><dt class="inline font-semibold text-ink/75">著作者：</dt><dd class="inline">{credit.author}</dd></div>
+                <div><dt class="inline font-semibold text-ink/75">利用：</dt><dd class="inline">{credit.usage}</dd></div>
+              </dl>
+            </div>
+            <div class="flex flex-wrap gap-2 md:justify-end">
+              <a href={credit.fileUrl} target="_blank" rel="noreferrer" class="rounded-full border border-ink/15 px-4 py-2 text-xs hover:bg-forest hover:text-white">原作品 ↗</a>
+              <a href={credit.licenseUrl} target="_blank" rel="noreferrer" class="rounded-full border border-ink/15 px-4 py-2 text-xs hover:bg-forest hover:text-white">{credit.license} ↗</a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,89 @@
+<section class="border-y border-ink/10 bg-[#ece5d8] py-16 md:py-20">
+  <div class="container-shell grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-center lg:gap-20">
+    <div class="reveal">
+      <span class="eyebrow">Simple estimate</span>
+      <h2 class="display-title text-4xl md:text-5xl">いくらかかる？</h2>
+      <p class="mt-5 max-w-md text-sm leading-8 text-ink/65 md:text-base">
+        日本寺の拝観料と、ロープウェーの基本運賃をすぐに試算できます。交通費・駐車料金は含みません。
+      </p>
+    </div>
+
+    <div class="reveal paper-card p-6 md:p-8" style="transition-delay: 100ms">
+      <div class="grid gap-5 sm:grid-cols-3">
+        <label class="block">
+          <span class="mb-2 block text-xs font-semibold tracking-wider text-ink/55">大人</span>
+          <select id="adult-count" class="w-full rounded-none border border-ink/15 bg-white/65 px-4 py-3 text-base">
+            <option value="0">0人</option>
+            <option value="1" selected>1人</option>
+            <option value="2">2人</option>
+            <option value="3">3人</option>
+            <option value="4">4人</option>
+            <option value="5">5人</option>
+            <option value="6">6人</option>
+          </select>
+        </label>
+        <label class="block">
+          <span class="mb-2 block text-xs font-semibold tracking-wider text-ink/55">小人・小児</span>
+          <select id="child-count" class="w-full rounded-none border border-ink/15 bg-white/65 px-4 py-3 text-base">
+            <option value="0" selected>0人</option>
+            <option value="1">1人</option>
+            <option value="2">2人</option>
+            <option value="3">3人</option>
+            <option value="4">4人</option>
+            <option value="5">5人</option>
+            <option value="6">6人</option>
+          </select>
+        </label>
+        <label class="block">
+          <span class="mb-2 block text-xs font-semibold tracking-wider text-ink/55">ロープウェー</span>
+          <select id="ropeway-type" class="w-full rounded-none border border-ink/15 bg-white/65 px-4 py-3 text-base">
+            <option value="round" selected>往復</option>
+            <option value="oneway">片道</option>
+            <option value="none">利用しない</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="mt-8 flex flex-col gap-5 border-t border-ink/12 pt-7 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="text-xs tracking-[.16em] text-ink/45">基本料金の目安</p>
+          <p id="cost-result" class="mt-1 font-serif text-4xl font-medium" aria-live="polite">1,900円</p>
+        </div>
+        <div class="max-w-sm text-xs leading-6 text-ink/50">
+          <p>内訳：<span id="cost-breakdown">日本寺 700円 ＋ ロープウェー 1,200円</span></p>
+          <p>小人は日本寺4歳以上中学生未満、小児運賃は小学生が対象です。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  type RopewayType = 'round' | 'oneway' | 'none';
+
+  const adultSelect = document.querySelector<HTMLSelectElement>('#adult-count');
+  const childSelect = document.querySelector<HTMLSelectElement>('#child-count');
+  const ropewaySelect = document.querySelector<HTMLSelectElement>('#ropeway-type');
+  const result = document.querySelector<HTMLElement>('#cost-result');
+  const breakdown = document.querySelector<HTMLElement>('#cost-breakdown');
+
+  const yen = new Intl.NumberFormat('ja-JP');
+  const ropewayAdult: Record<RopewayType, number> = { round: 1200, oneway: 650, none: 0 };
+  const ropewayChild: Record<RopewayType, number> = { round: 600, oneway: 320, none: 0 };
+
+  const calculate = (): void => {
+    if (!adultSelect || !childSelect || !ropewaySelect || !result || !breakdown) return;
+
+    const adults = Number(adultSelect.value);
+    const children = Number(childSelect.value);
+    const route = ropewaySelect.value as RopewayType;
+    const temple = adults * 700 + children * 400;
+    const ropeway = adults * ropewayAdult[route] + children * ropewayChild[route];
+    const total = temple + ropeway;
+
+    result.textContent = `${yen.format(total)}円`;
+    breakdown.textContent = `日本寺 ${yen.format(temple)}円 ＋ ロープウェー ${yen.format(ropeway)}円`;
+  };
+
+  [adultSelect, childSelect, ropewaySelect].forEach((select) => select?.addEventListener('change', calculate));
+</script>

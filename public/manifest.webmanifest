@@ -1,0 +1,16 @@
+{
+  "name": "地獄のぞき｜鋸山旅案内",
+  "short_name": "地獄のぞき",
+  "lang": "ja",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f0e7",
+  "theme_color": "#1b2922",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

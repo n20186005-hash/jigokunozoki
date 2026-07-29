@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="プライバシーポリシー｜地獄のぞき" description="JigokuNozoki.comのプライバシーポリシー。" canonical="/privacy">
+  <Header />
+  <main id="main" class="min-h-screen bg-washi pb-24 pt-36">
+    <article class="container-shell max-w-3xl">
+      <span class="eyebrow">Privacy</span>
+      <h1 class="display-title text-4xl md:text-6xl">プライバシーポリシー</h1>
+      <div class="mt-10 space-y-9 text-sm leading-8 text-ink/65 md:text-base">
+        <section>
+          <h2 class="font-serif text-2xl font-medium text-ink">基本方針</h2>
+          <p class="mt-3">当サイトは、地獄のぞき・鋸山を訪れる方のための情報提供サイトです。会員登録、ログイン、予約、問い合わせフォームは設置しておらず、当サイト独自のデータベースに個人情報を保存しません。</p>
+        </section>
+        <section>
+          <h2 class="font-serif text-2xl font-medium text-ink">アクセスログ</h2>
+          <p class="mt-3">サイトの配信・セキュリティ維持のため、ホスティング事業者がIPアドレス、ブラウザ情報、閲覧時刻などの技術的なアクセス情報を一時的に処理する場合があります。</p>
+        </section>
+        <section>
+          <h2 class="font-serif text-2xl font-medium text-ink">外部サービス・リンク</h2>
+          <p class="mt-3">当サイトでは所在地を案内するため、Google マップの埋め込み表示を利用しています。地図の読み込み時には、IPアドレスやブラウザ情報などがGoogleに送信される場合があります。また、日本寺、鋸山ロープウェーなど外部サイトへのリンクを掲載しています。各サービスでの情報の取り扱いは、それぞれのプライバシーポリシーをご確認ください。</p>
+        </section>
+        <section>
+          <h2 class="font-serif text-2xl font-medium text-ink">アクセス解析とCookie</h2>
+          <p class="mt-3">
+            当サイトでは、利用状況を把握し、掲載内容を改善するためにGoogle Analytics 4を利用しています。Google AnalyticsはCookieを使用し、閲覧したページ、利用環境、おおよその地域、サイト内での操作などの情報を収集する場合があります。収集された情報はGoogleのプライバシーポリシーに基づいて管理されます。詳しくは
+            <a class="underline underline-offset-4 hover:text-ink" href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Google プライバシーポリシー</a>
+            をご確認ください。計測を無効にする場合は
+            <a class="underline underline-offset-4 hover:text-ink" href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noreferrer">Google Analytics オプトアウト アドオン</a>
+            を利用できます。
+          </p>
+        </section>
+        <section>
+          <h2 class="font-serif text-2xl font-medium text-ink">改定</h2>
+          <p class="mt-3">法令、サービス内容、利用する外部サービスの変更に応じて、本ポリシーを見直し、必要な変更を本ページでお知らせします。</p>
+        </section>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>
