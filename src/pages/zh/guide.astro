@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopicPage from '../../components/TopicPage.astro';
+import { getTopic } from '../../content/topics';
+import { buildBreadcrumb, buildFaq } from '../../lib/schema';
+import { SITE_URL, siteNames } from '../../data/site';
+import { ui, type Locale } from '../../i18n';
+
+const locale: Locale = 'zh';
+const topic = getTopic('guide', locale);
+const t = ui[locale];
+const url = `${SITE_URL}/zh/guide`;
+const breadcrumb = buildBreadcrumb([
+  { name: t.homeLink, url: `${SITE_URL}/zh` },
+  { name: topic.heading, url },
+]);
+const faqSchema = buildFaq(topic.faq);
+---
+
+<BaseLayout title={`${topic.title} | ${siteNames[locale]}`} description={topic.description} locale={locale} path="guide">
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumb)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+  <TopicPage locale={locale} slug="guide" />
+</BaseLayout>

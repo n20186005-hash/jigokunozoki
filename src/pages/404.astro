@@ -1,14 +1,25 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { withSiteName } from '../data/site';
+import { ui, type Locale } from '../i18n';
+
+const locale: Locale = 'ja';
+const t = ui[locale];
 ---
 
-<BaseLayout title="ページが見つかりません｜地獄のぞき" description="お探しのページは見つかりませんでした。">
+<BaseLayout
+  title={withSiteName(t.notFound.title)}
+  description="お探しのページは見つかりませんでした。"
+  locale={locale}
+  noIndex={true}
+  i18n={false}
+>
   <main class="grid min-h-screen place-items-center bg-forest px-6 text-center text-white">
     <div>
-      <p class="text-xs tracking-[.3em] text-[#d7b675]">404 / NOT FOUND</p>
-      <h1 class="mt-5 font-serif text-5xl font-medium md:text-7xl">道に迷ったようです。</h1>
-      <p class="mx-auto mt-5 max-w-lg text-sm leading-7 text-white/55">この先にページはありません。山頂へ戻り、もう一度歩き始めましょう。</p>
-      <a href="/" class="mt-8 inline-flex rounded-full bg-vermilion px-6 py-3 text-sm font-semibold">トップへ戻る</a>
+      <p class="text-xs tracking-[.3em] text-[#d7b675]">{t.notFound.label}</p>
+      <h1 class="mt-5 font-serif text-5xl font-medium md:text-7xl">{t.notFound.title}</h1>
+      <p class="mx-auto mt-5 max-w-lg text-sm leading-7 text-white/55">{t.notFound.text}</p>
+      <a href="/" class="mt-8 inline-flex rounded-full bg-vermilion px-6 py-3 text-sm font-semibold">{t.notFound.back}</a>
     </div>
   </main>
 </BaseLayout>

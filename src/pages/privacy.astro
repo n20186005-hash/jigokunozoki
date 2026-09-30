@@ -2,10 +2,20 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { withSiteName } from '../data/site';
+import type { Locale } from '../i18n';
+
+const locale: Locale = 'ja';
 ---
 
-<BaseLayout title="プライバシーポリシー｜地獄のぞき" description="JigokuNozoki.comのプライバシーポリシー。" canonical="/privacy">
-  <Header />
+<BaseLayout
+  title={withSiteName('プライバシーポリシー')}
+  description="JigokuNozoki.comのプライバシーポリシー。アクセス解析、Cookie、Google マップ埋め込み、外部リンクの取り扱いを説明します。"
+  locale={locale}
+  path="privacy"
+  i18n={false}
+>
+  <Header locale={locale} showLanguages={false} />
   <main id="main" class="min-h-screen bg-washi pb-24 pt-36">
     <article class="container-shell max-w-3xl">
       <span class="eyebrow">Privacy</span>
@@ -40,5 +50,5 @@ import Footer from '../components/Footer.astro';
       </div>
     </article>
   </main>
-  <Footer />
+  <Footer locale={locale} />
 </BaseLayout>

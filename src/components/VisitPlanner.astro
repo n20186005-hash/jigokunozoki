@@ -1,86 +1,91 @@
 ---
-import { accessModes } from '../data/site';
+import { jigokuNozokiLocation } from '../data/site';
+import type { GuideContent } from '../content/guide';
+
+interface Props {
+  plan: GuideContent['plan'];
+}
+
+const { plan } = Astro.props;
 ---
 
 <section id="plan" class="section-space bg-forest text-white">
   <div class="container-shell">
     <div class="grid gap-12 lg:grid-cols-[.8fr_1.2fr] lg:gap-20">
       <div class="reveal">
-        <span class="eyebrow !text-[#d7b675]">Plan your visit</span>
-        <h2 class="display-title text-4xl md:text-5xl">あなたに合う、<br />山頂への道。</h2>
-        <p class="mt-6 max-w-md text-sm leading-8 text-white/65 md:text-base">
-          鋸山は、ロープウェー・車・徒歩で登れます。時間、体力、見たい場所によって、最適な入口が変わります。
-        </p>
+        <span class="eyebrow !text-[#d7b675]">{plan.eyebrow}</span>
+        <h2 class="display-title text-4xl md:text-5xl">{plan.title}</h2>
+        <p class="mt-6 max-w-md text-sm leading-8 text-white/65 md:text-base">{plan.text}</p>
         <div class="mt-8 border-l border-white/15 pl-5 text-sm leading-7 text-white/55">
-          <p>地獄のぞきは日本寺の境内です。</p>
-          <p>ロープウェー料金とは別に拝観料が必要です。</p>
+          {plan.noteLines.map((line) => <p>{line}</p>)}
         </div>
       </div>
 
       <div class="reveal" style="transition-delay: 120ms">
-        <div class="flex flex-wrap gap-2" role="tablist" aria-label="アクセス方法を選択">
-          {accessModes.map((mode, index) => (
-            <button
-              type="button"
-              role="tab"
-              id={`tab-${mode.id}`}
-              aria-controls={`panel-${mode.id}`}
-              aria-selected={index === 0 ? 'true' : 'false'}
-              data-route-tab={mode.id}
-              class:list={[
-                'route-tab rounded-full border px-5 py-3 text-sm font-semibold transition',
-                index === 0
-                  ? 'border-[#d7b675] bg-[#d7b675] text-forest'
-                  : 'border-white/20 text-white/65 hover:border-white/50 hover:text-white',
-              ]}
-            >
-              {mode.label}
-            </button>
-          ))}
+        <div class="flex flex-wrap gap-2" role="tablist" aria-label={plan.title}>
+          {
+            plan.modes.map((mode, index) => (
+              <button
+                type="button"
+                role="tab"
+                id={`tab-${mode.id}`}
+                aria-controls={`panel-${mode.id}`}
+                aria-selected={index === 0 ? 'true' : 'false'}
+                data-route-tab={mode.id}
+                class:list={[
+                  'route-tab rounded-full border px-5 py-3 text-sm font-semibold transition',
+                  index === 0
+                    ? 'border-[#d7b675] bg-[#d7b675] text-forest'
+                    : 'border-white/20 text-white/65 hover:border-white/50 hover:text-white',
+                ]}
+              >
+                {mode.label}
+              </button>
+            ))
+          }
         </div>
 
         <div class="mt-7">
-          {accessModes.map((mode, index) => (
-            <article
-              id={`panel-${mode.id}`}
-              role="tabpanel"
-              aria-labelledby={`tab-${mode.id}`}
-              data-route-panel={mode.id}
-              class:list={[
-                'route-panel border border-white/12 bg-white/[.045] p-6 md:p-9',
-                index !== 0 && 'hidden',
-              ]}
-            >
-              <div class="flex flex-col justify-between gap-5 border-b border-white/12 pb-6 sm:flex-row sm:items-end">
-                <div>
-                  <p class="text-xs tracking-[.18em] text-[#d7b675]">{mode.short}</p>
-                  <h3 class="mt-2 font-serif text-3xl font-medium">{mode.label}で行く</h3>
+          {
+            plan.modes.map((mode, index) => (
+              <article
+                id={`panel-${mode.id}`}
+                role="tabpanel"
+                aria-labelledby={`tab-${mode.id}`}
+                data-route-panel={mode.id}
+                class:list={['route-panel border border-white/12 bg-white/[.045] p-6 md:p-9', index !== 0 && 'hidden']}
+              >
+                <div class="flex flex-col justify-between gap-5 border-b border-white/12 pb-6 sm:flex-row sm:items-end">
+                  <div>
+                    <p class="text-xs tracking-[.18em] text-[#d7b675]">{mode.short}</p>
+                    <h3 class="mt-2 font-serif text-3xl font-medium">{mode.label}</h3>
+                  </div>
+                  <div class="flex gap-2 text-xs">
+                    <span class="rounded-full bg-white/8 px-3 py-1.5 text-white/70">{mode.duration}</span>
+                    <span class="rounded-full bg-white/8 px-3 py-1.5 text-white/70">{mode.difficulty}</span>
+                  </div>
                 </div>
-                <div class="flex gap-2 text-xs">
-                  <span class="rounded-full bg-white/8 px-3 py-1.5 text-white/70">{mode.duration}</span>
-                  <span class="rounded-full bg-white/8 px-3 py-1.5 text-white/70">{mode.difficulty}</span>
+
+                <p class="mt-6 max-w-2xl leading-8 text-white/72">{mode.summary}</p>
+
+                <ol class="mt-7 grid gap-3 sm:grid-cols-2">
+                  {mode.steps.map((step, stepIndex) => (
+                    <li class="flex gap-4 border border-white/10 bg-black/10 p-4">
+                      <span class="grid size-8 shrink-0 place-items-center rounded-full border border-white/20 font-serif text-sm text-[#d7b675]">
+                        {String(stepIndex + 1).padStart(2, '0')}
+                      </span>
+                      <span class="pt-0.5 text-sm leading-6 text-white/72">{step}</span>
+                    </li>
+                  ))}
+                </ol>
+
+                <div class="mt-6 flex gap-3 border-l-2 border-vermilion bg-vermilion/10 px-4 py-3 text-sm leading-6 text-white/72">
+                  <span aria-hidden="true">※</span>
+                  <p>{mode.note}</p>
                 </div>
-              </div>
-
-              <p class="mt-6 max-w-2xl leading-8 text-white/72">{mode.summary}</p>
-
-              <ol class="mt-7 grid gap-3 sm:grid-cols-2">
-                {mode.steps.map((step, stepIndex) => (
-                  <li class="flex gap-4 border border-white/10 bg-black/10 p-4">
-                    <span class="grid size-8 shrink-0 place-items-center rounded-full border border-white/20 font-serif text-sm text-[#d7b675]">
-                      {String(stepIndex + 1).padStart(2, '0')}
-                    </span>
-                    <span class="pt-0.5 text-sm leading-6 text-white/72">{step}</span>
-                  </li>
-                ))}
-              </ol>
-
-              <div class="mt-6 flex gap-3 border-l-2 border-vermilion bg-vermilion/10 px-4 py-3 text-sm leading-6 text-white/72">
-                <span aria-hidden="true">※</span>
-                <p>{mode.note}</p>
-              </div>
-            </article>
-          ))}
+              </article>
+            ))
+          }
         </div>
       </div>
     </div>
@@ -89,47 +94,39 @@ import { accessModes } from '../data/site';
       <div class="reveal image-frame min-h-[330px] md:min-h-[460px]">
         <img
           src="/images/nokogiriyama-ropeway.webp"
-          alt="東京湾と金谷の町を背に山を上る鋸山ロープウェー"
+          alt={plan.ropewayImage.alt}
           loading="lazy"
           width="1400"
           height="1050"
           class="object-[50%_58%]"
         />
         <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-forest/90 to-transparent p-6 pt-24">
-          <p class="font-serif text-2xl">空と海を結ぶ、約4分。</p>
-          <p class="mt-2 text-sm text-white/65">ロープウェーからは金谷の町と東京湾を一望できます。</p>
+          <p class="font-serif text-2xl">{plan.ropewayImage.title}</p>
+          <p class="mt-2 text-sm text-white/65">{plan.ropewayImage.text}</p>
         </div>
       </div>
 
       <aside class="reveal border border-white/12 bg-white/[.045] p-6 md:p-8" style="transition-delay: 100ms">
-        <p class="text-xs tracking-[.18em] text-[#d7b675]">ROPEWAY FARE</p>
-        <h3 class="mt-3 font-serif text-2xl font-medium">ロープウェー運賃</h3>
+        <p class="text-xs tracking-[.18em] text-[#d7b675]">{plan.fare.eyebrow}</p>
+        <h3 class="mt-3 font-serif text-2xl font-medium">{plan.fare.title}</h3>
         <dl class="mt-7 divide-y divide-white/10 text-sm">
-          <div class="flex items-center justify-between py-4">
-            <dt class="text-white/60">大人・片道</dt>
-            <dd class="font-serif text-xl">650円</dd>
-          </div>
-          <div class="flex items-center justify-between py-4">
-            <dt class="text-white/60">大人・往復</dt>
-            <dd class="font-serif text-xl">1,200円</dd>
-          </div>
-          <div class="flex items-center justify-between py-4">
-            <dt class="text-white/60">小児・片道</dt>
-            <dd class="font-serif text-xl">320円</dd>
-          </div>
-          <div class="flex items-center justify-between py-4">
-            <dt class="text-white/60">小児・往復</dt>
-            <dd class="font-serif text-xl">600円</dd>
-          </div>
+          {
+            plan.fare.rows.map((row) => (
+              <div class="flex items-center justify-between py-4">
+                <dt class="text-white/60">{row.label}</dt>
+                <dd class="font-serif text-xl">{row.value}</dd>
+              </div>
+            ))
+          }
         </dl>
-        <p class="mt-5 text-xs leading-6 text-white/45">通常期 9:00–17:00／冬季 9:00–16:00。荒天時は運休する場合があります。</p>
+        <p class="mt-5 text-xs leading-6 text-white/45">{plan.fare.note}</p>
         <a
-          href="https://www.mt-nokogiri.co.jp/pc/p040000.php"
+          href={jigokuNozokiLocation.ropewayFareUrl}
           target="_blank"
           rel="noreferrer"
           class="mt-6 inline-flex items-center gap-2 border-b border-white/35 pb-1 text-sm text-white/75 transition hover:text-white"
         >
-          公式の運行情報を確認 <span aria-hidden="true">↗</span>
+          {plan.fare.linkText} <span aria-hidden="true">↗</span>
         </a>
       </aside>
     </div>

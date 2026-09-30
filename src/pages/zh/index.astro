@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import HomeSections from '../../components/HomeSections.astro';
+import Footer from '../../components/Footer.astro';
+import { getGuide } from '../../content/guide';
+import { buildFaq } from '../../lib/schema';
+import type { Locale } from '../../i18n';
+
+const locale: Locale = 'zh';
+const guide = getGuide(locale);
+const faqSchema = buildFaq(guide.faq.items);
+---
+
+<BaseLayout locale={locale} path="">
+  <Fragment slot="head">
+    <link rel="preload" as="image" href="/images/jigoku-nozoki-hero.webp" />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+  <Header locale={locale} />
+  <HomeSections locale={locale} />
+  <Footer locale={locale} />
+</BaseLayout>

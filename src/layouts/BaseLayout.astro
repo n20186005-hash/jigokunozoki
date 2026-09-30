@@ -1,54 +1,50 @@
 ---
 import '../styles/global.css';
-import { jigokuNozokiLocation } from '../data/site';
+import { SITE_URL, ogSiteNames } from '../data/site';
+import { getGuide } from '../content/guide';
+import { hreflangAlternates, localeMeta, pagePath, ui, type Locale } from '../i18n';
+import { buildAttraction, buildWebSite } from '../lib/schema';
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
-  canonical?: string;
+  locale?: Locale;
+  path?: string;
+  noIndex?: boolean;
+  /** false 时只输出该语言自身的 canonical，不输出 hreflang（单语页面用） */
+  i18n?: boolean;
 }
 
 const {
-  title = '地獄のぞき｜鋸山・日本寺の絶景を訪ねる',
-  description = '千葉県・鋸山の地獄のぞきへ。日本寺の拝観時間、料金、ロープウェー、アクセス、見どころ、モデルコースを日本語でわかりやすく案内します。',
+  title,
+  description,
   image = '/images/og.jpg',
-  canonical = Astro.url.pathname,
+  locale = 'ja',
+  path = '',
+  noIndex = false,
+  i18n = true,
 } = Astro.props;
 
-const canonicalUrl = new URL(canonical, Astro.site ?? Astro.url);
-const imageUrl = new URL(image, Astro.site ?? Astro.url);
-const canonicalHref = canonicalUrl.toString();
-const imageHref = imageUrl.toString();
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'TouristAttraction',
-  name: '地獄のぞき',
-  alternateName: ['Jigoku Nozoki', '地獄覗き'],
-  description,
-  url: canonicalHref,
-  image: imageHref,
-  hasMap: jigokuNozokiLocation.googleMapsUrl,
-  address: {
-    '@type': 'PostalAddress',
-    postalCode: jigokuNozokiLocation.postalCode,
-    addressRegion: jigokuNozokiLocation.addressRegion,
-    addressLocality: jigokuNozokiLocation.addressLocality,
-    streetAddress: jigokuNozokiLocation.streetAddress,
-    addressCountry: 'JP',
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: jigokuNozokiLocation.latitude,
-    longitude: jigokuNozokiLocation.longitude,
-  },
-  isAccessibleForFree: false,
-  touristType: ['自然景観', '寺院参拝', 'ハイキング', '写真撮影'],
-};
+const guide = getGuide(locale);
+const pageTitle = title ?? guide.meta.title;
+const pageDescription = description ?? guide.meta.description;
+
+const site = Astro.site ?? new URL(SITE_URL);
+const canonicalPath = pagePath(locale, path);
+const canonicalHref = new URL(canonicalPath, site).toString();
+const imageHref = new URL(image, site).toString();
+
+const meta = localeMeta[locale];
+const alternates = i18n ? hreflangAlternates(site.toString(), path) : [];
+const t = ui[locale];
+
+const attraction = buildAttraction(locale, canonicalHref, imageHref);
+const website = buildWebSite(locale);
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang={meta.htmlLang}>
   <head>
     <!-- Google tag (gtag.js) -->
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP"></script>
@@ -64,27 +60,34 @@ const structuredData = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#1b2922" />
     <meta name="color-scheme" content="light" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canonicalHref} />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="ja_JP" />
-    <meta property="og:site_name" content="地獄のぞき｜鋸山旅案内" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={ogSiteNames[locale]} />
+    <meta property="og:locale" content={meta.ogLocale} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={canonicalHref} />
     <meta property="og:image" content={imageHref} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={imageHref} />
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    {
+      alternates.map((alternate) => (
+        <link rel="alternate" hreflang={alternate.lang} href={alternate.href} />
+      ))
+    }
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(attraction)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(website)} />
     <slot name="head" />
   </head>
   <body>
-    <a class="skip-link" href="#main">本文へ移動</a>
+    <a class="skip-link" href="#main">{t.skipLink}</a>
     <slot />
   </body>
 </html>

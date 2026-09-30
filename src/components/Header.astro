@@ -1,33 +1,73 @@
 ---
-import { jigokuNozokiLocation } from '../data/site';
+import { jigokuNozokiLocation, shortBrand } from '../data/site';
+import { locales, localeMeta, pagePath, ui, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  path?: string;
+  /** 单语页面（隐私政策等）设为 false，避免链接到不存在的语言版本 */
+  showLanguages?: boolean;
+}
+
+const { locale, path = '', showLanguages = true } = Astro.props;
+const t = ui[locale];
+const home = pagePath(locale);
+const sectionLinks = [
+  { href: '#about', label: t.nav.highlights },
+  { href: '#plan', label: t.nav.access },
+  { href: '#course', label: t.nav.course },
+  { href: '#info', label: t.nav.info },
+  { href: '#faq', label: t.nav.faq },
+];
 ---
 
 <header class="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-forest/82 text-white backdrop-blur-xl">
   <div class="container-shell flex h-[76px] items-center justify-between gap-4">
-    <a href="/#top" class="group flex items-center gap-3" aria-label="地獄のぞき トップへ">
-      <span class="grid size-10 place-items-center rounded-full border border-white/25 text-sm font-serif transition group-hover:border-white/60">獄</span>
+    <a href={`${home}#top`} class="group flex items-center gap-3" aria-label={`${shortBrand[locale]} — ${t.homeLink}`}>
+      <span class="grid size-10 place-items-center rounded-full border border-white/25 font-serif text-sm transition group-hover:border-white/60">獄</span>
       <span class="leading-tight">
-        <strong class="block font-serif text-base font-medium tracking-[0.12em]">地獄のぞき</strong>
+        <strong class="block font-serif text-base font-medium tracking-[0.12em]">{shortBrand[locale]}</strong>
         <span class="block text-[10px] tracking-[0.18em] text-white/60">JIGOKU NOZOKI</span>
       </span>
     </a>
 
-    <nav class="hidden items-center gap-7 text-sm md:flex" aria-label="メインナビゲーション">
-      <a class="text-white/75 transition hover:text-white" href="/#about">見どころ</a>
-      <a class="text-white/75 transition hover:text-white" href="/#plan">行き方</a>
-      <a class="text-white/75 transition hover:text-white" href="/#course">モデルコース</a>
-      <a class="text-white/75 transition hover:text-white" href="/#info">拝観案内</a>
-      <a class="text-white/75 transition hover:text-white" href="/#faq">よくある質問</a>
+    <nav class="hidden items-center gap-7 text-sm md:flex" aria-label={t.sectionNav}>
+      {
+        sectionLinks.map((link) => (
+          <a class="text-white/75 transition hover:text-white" href={`${home}${link.href}`}>{link.label}</a>
+        ))
+      }
     </nav>
 
     <div class="flex items-center gap-2">
+      {showLanguages && (
+        <nav class="hidden items-center gap-1 text-xs sm:flex" aria-label={t.languageLabel}>
+          {
+            locales.map((item) => (
+              <a
+                href={pagePath(item, path)}
+                hreflang={localeMeta[item].hreflang}
+                aria-current={item === locale ? 'page' : undefined}
+                class:list={[
+                  'rounded-full border px-3 py-1.5 tracking-wider transition',
+                  item === locale
+                    ? 'border-[#d7b675] bg-[#d7b675] font-semibold text-forest'
+                    : 'border-white/25 text-white/65 hover:border-white/60 hover:text-white',
+                ]}
+              >
+                {localeMeta[item].short}
+              </a>
+            ))
+          }
+        </nav>
+      )}
       <a
         href={jigokuNozokiLocation.googleMapsUrl}
         target="_blank"
         rel="noreferrer"
         class="hidden rounded-full border border-white/25 px-4 py-2 text-xs font-semibold tracking-wider transition hover:bg-white hover:text-forest sm:inline-flex"
       >
-        地図を開く
+        {t.openMap}
       </a>
       <button
         id="menu-button"
@@ -35,7 +75,9 @@ import { jigokuNozokiLocation } from '../data/site';
         class="grid size-10 place-items-center rounded-full border border-white/25 md:hidden"
         aria-expanded="false"
         aria-controls="mobile-menu"
-        aria-label="メニューを開く"
+        aria-label={t.menuOpen}
+        data-label-open={t.menuOpen}
+        data-label-close={t.menuClose}
       >
         <span class="relative block h-3.5 w-4" aria-hidden="true">
           <span class="absolute left-0 top-0 h-px w-4 bg-white"></span>
@@ -46,13 +88,34 @@ import { jigokuNozokiLocation } from '../data/site';
     </div>
   </div>
 
-  <nav id="mobile-menu" class="hidden border-t border-white/10 bg-forest px-4 py-5 md:hidden" aria-label="モバイルナビゲーション">
+  <nav id="mobile-menu" class="hidden border-t border-white/10 bg-forest px-4 py-5 md:hidden" aria-label={t.mobileNav}>
     <div class="container-shell grid gap-1 text-sm">
-      <a class="rounded-lg px-3 py-3 hover:bg-white/10" href="/#about">見どころ</a>
-      <a class="rounded-lg px-3 py-3 hover:bg-white/10" href="/#plan">行き方</a>
-      <a class="rounded-lg px-3 py-3 hover:bg-white/10" href="/#course">モデルコース</a>
-      <a class="rounded-lg px-3 py-3 hover:bg-white/10" href="/#info">拝観案内</a>
-      <a class="rounded-lg px-3 py-3 hover:bg-white/10" href="/#faq">よくある質問</a>
+      {
+        sectionLinks.map((link) => (
+          <a class="rounded-lg px-3 py-3 hover:bg-white/10" href={`${home}${link.href}`}>{link.label}</a>
+        ))
+      }
+      {showLanguages && (
+        <div class="mt-3 flex gap-2 border-t border-white/10 pt-3">
+          {
+            locales.map((item) => (
+              <a
+                href={pagePath(item, path)}
+                hreflang={localeMeta[item].hreflang}
+                aria-current={item === locale ? 'page' : undefined}
+                class:list={[
+                  'rounded-full border px-4 py-2 text-xs tracking-wider',
+                  item === locale
+                    ? 'border-[#d7b675] bg-[#d7b675] font-semibold text-forest'
+                    : 'border-white/25 text-white/70',
+                ]}
+              >
+                {localeMeta[item].label}
+              </a>
+            ))
+          }
+        </div>
+      )}
     </div>
   </nav>
 </header>
@@ -61,17 +124,20 @@ import { jigokuNozokiLocation } from '../data/site';
   const menuButton = document.querySelector<HTMLButtonElement>('#menu-button');
   const mobileMenu = document.querySelector<HTMLElement>('#mobile-menu');
 
+  const openLabel = menuButton?.dataset.labelOpen ?? 'メニューを開く';
+  const closeLabel = menuButton?.dataset.labelClose ?? 'メニューを閉じる';
+
   menuButton?.addEventListener('click', () => {
     const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
     menuButton.setAttribute('aria-expanded', String(!isOpen));
-    menuButton.setAttribute('aria-label', isOpen ? 'メニューを開く' : 'メニューを閉じる');
+    menuButton.setAttribute('aria-label', isOpen ? openLabel : closeLabel);
     mobileMenu?.classList.toggle('hidden', isOpen);
   });
 
   mobileMenu?.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
       menuButton?.setAttribute('aria-expanded', 'false');
-      menuButton?.setAttribute('aria-label', 'メニューを開く');
+      menuButton?.setAttribute('aria-label', openLabel);
       mobileMenu.classList.add('hidden');
     });
   });

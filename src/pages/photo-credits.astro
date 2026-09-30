@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { withSiteName } from '../data/site';
+import type { Locale } from '../i18n';
 
 const credits = [
   {
@@ -59,10 +61,18 @@ const credits = [
     usage: '見どころ紹介。縮小・トリミング。',
   },
 ];
+
+const locale: Locale = 'ja';
 ---
 
-<BaseLayout title="写真クレジット｜地獄のぞき" description="JigokuNozoki.comで使用している写真の著作者とCreative Commonsライセンス情報。" canonical="/photo-credits">
-  <Header />
+<BaseLayout
+  title={withSiteName('写真クレジット')}
+  description="JigokuNozoki.comで使用している写真の著作者とCreative Commonsライセンス情報。"
+  locale={locale}
+  path="photo-credits"
+  i18n={false}
+>
+  <Header locale={locale} showLanguages={false} />
   <main id="main" class="min-h-screen bg-washi pb-24 pt-36">
     <div class="container-shell max-w-4xl">
       <span class="eyebrow">Photo credits</span>
@@ -92,5 +102,5 @@ const credits = [
       </div>
     </div>
   </main>
-  <Footer />
+  <Footer locale={locale} />
 </BaseLayout>

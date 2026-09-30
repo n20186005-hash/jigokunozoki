@@ -1,0 +1,304 @@
+---
+import { jigokuNozokiLocation, ratingSnapshot } from '../data/site';
+import { getGuide } from '../content/guide';
+import { pagePath, ui, type Locale } from '../i18n';
+import Hero from './Hero.astro';
+import VisitPlanner from './VisitPlanner.astro';
+import CostCalculator from './CostCalculator.astro';
+import FAQ from './FAQ.astro';
+import InfoCard from './InfoCard.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const content = getGuide(locale);
+const t = ui[locale];
+const ratingText = `${ratingSnapshot.value} / ${ratingSnapshot.count}${t.ratingCountUnit}`;
+const accessHref = pagePath(locale, 'access');
+const guideHref = pagePath(locale, 'guide');
+---
+
+<main id="main">
+  <Hero hero={content.hero} locale={locale} />
+
+  <section id="about" class="section-space overflow-hidden">
+    <div class="container-shell">
+      <div class="grid gap-12 lg:grid-cols-[.88fr_1.12fr] lg:items-center lg:gap-24">
+        <div class="reveal relative">
+          <div class="image-frame aspect-[4/5] max-h-[720px]">
+            <img
+              src="/images/nokogiriyama-view.webp"
+              alt={content.about.imageAlt}
+              loading="lazy"
+              width="1200"
+              height="1600"
+              class="object-[50%_45%]"
+            />
+          </div>
+          <div class="absolute -bottom-7 -right-4 border border-ink/10 bg-washi p-5 shadow-soft sm:-right-8 sm:p-7">
+            <p class="vertical-label font-serif text-sm leading-loose text-ink/65">
+              {content.about.verticalLabel[0]}<br />{content.about.verticalLabel[1]}
+            </p>
+          </div>
+        </div>
+
+        <div class="reveal" style="transition-delay: 100ms">
+          <span class="eyebrow">{content.about.eyebrow}</span>
+          <h2 class="display-title text-4xl md:text-6xl">{content.about.title}</h2>
+          <p class="mt-7 font-serif text-xl leading-9 text-ink/78 md:text-2xl md:leading-10">{content.about.lead}</p>
+          <div class="mt-7 space-y-5 text-sm leading-8 text-ink/62 md:text-base">
+            {content.about.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+          </div>
+
+          <dl class="mt-9 grid grid-cols-2 gap-px border border-ink/10 bg-ink/10 sm:grid-cols-4">
+            {
+              content.about.stats.map((stat) => (
+                <div class="bg-washi p-4">
+                  <dt class="text-[10px] tracking-[.16em] text-ink/45">{stat.label}</dt>
+                  <dd class="mt-1 font-serif text-2xl">{stat.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-space border-y border-ink/10 bg-[#e8e0d2]">
+    <div class="container-shell">
+      <div class="mx-auto max-w-3xl text-center reveal">
+        <span class="eyebrow">{content.highlights.eyebrow}</span>
+        <h2 class="display-title text-4xl md:text-5xl">{content.highlights.title}</h2>
+        <p class="mx-auto mt-5 max-w-2xl text-sm leading-8 text-ink/60 md:text-base">{content.highlights.text}</p>
+      </div>
+
+      <div class="mt-14 grid gap-7 lg:grid-cols-3">
+        {
+          content.highlights.items.map((item, index) => (
+            <article class="reveal bg-washi" style={`transition-delay: ${index * 90}ms`}>
+              <div class="image-frame aspect-[4/5]">
+                <img
+                  src={item.image}
+                  alt={item.alt}
+                  loading="lazy"
+                  width="1400"
+                  height="1050"
+                  style={`object-position:${item.objectPosition ?? '50% 50%'}`}
+                />
+                <span class="absolute left-4 top-4 rounded-full bg-forest/85 px-3 py-1 text-[10px] tracking-wider text-white backdrop-blur">{item.meta}</span>
+              </div>
+              <div class="p-6 md:p-7">
+                <p class="text-[10px] tracking-[.2em] text-vermilion">{item.kana}</p>
+                <h3 class="mt-2 font-serif text-2xl font-medium">{item.title}</h3>
+                <p class="mt-4 text-sm leading-7 text-ink/60">{item.description}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <VisitPlanner plan={content.plan} />
+  <CostCalculator cost={content.cost} locale={locale} />
+
+  <section id="course" class="section-space overflow-hidden">
+    <div class="container-shell">
+      <div class="grid gap-12 lg:grid-cols-[.75fr_1.25fr] lg:gap-20">
+        <div class="reveal">
+          <span class="eyebrow">{content.course.eyebrow}</span>
+          <h2 class="display-title text-4xl md:text-5xl">{content.course.title}</h2>
+          <p class="mt-6 max-w-md text-sm leading-8 text-ink/60 md:text-base">{content.course.text}</p>
+          <div class="mt-8 inline-flex items-center gap-3 rounded-full border border-ink/12 bg-white/55 px-5 py-3 text-sm">
+            <span class="size-2 rounded-full bg-vermilion"></span>
+            {content.course.durationLabel}
+          </div>
+        </div>
+
+        <ol class="reveal relative space-y-0 border-l border-ink/15 pl-7 md:pl-10" style="transition-delay: 100ms">
+          {
+            content.course.steps.map((step, index) => (
+              <li class="relative border-b border-ink/10 py-7 first:pt-0 last:border-0">
+                <span class="absolute -left-[2.18rem] top-8 grid size-4 place-items-center rounded-full border-4 border-washi bg-vermilion md:-left-[2.72rem]"></span>
+                <div class="grid gap-3 sm:grid-cols-[72px_1fr] sm:gap-6">
+                  <div>
+                    <span class="text-[10px] tracking-wider text-ink/40">{content.course.startLabel}</span>
+                    <p class="font-serif text-2xl text-vermilion">{step.minute}<span class="ml-1 text-xs">{content.course.minuteUnit}</span></p>
+                  </div>
+                  <div>
+                    <h3 class="font-serif text-xl font-medium">{`${index + 1}. ${step.title}`}</h3>
+                    <p class="mt-2 text-sm leading-7 text-ink/58">{step.description}</p>
+                  </div>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div class="kamon-divider mt-16">
+        <svg viewBox="0 0 40 40" class="size-8" aria-hidden="true"><circle cx="20" cy="20" r="15" fill="none" stroke="currentColor"/><path d="M20 7v26M7 20h26M11 11l18 18M29 11 11 29" stroke="currentColor"/></svg>
+      </div>
+
+      <div class="mt-16 grid gap-8 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
+        <div class="reveal image-frame aspect-[16/10]">
+          <img
+            src="/images/jigoku-nozoki-hero.webp"
+            alt={content.course.photo.alt}
+            loading="lazy"
+            width="2200"
+            height="1650"
+            class="object-[50%_46%]"
+          />
+        </div>
+        <div class="reveal lg:pl-8" style="transition-delay: 100ms">
+          <span class="eyebrow">{content.course.photo.eyebrow}</span>
+          <h2 class="display-title text-4xl">{content.course.photo.title}</h2>
+          <ul class="mt-7 space-y-5 text-sm leading-7 text-ink/62 md:text-base">
+            {
+              content.course.photo.items.map((tip, index) => (
+                <li class="flex gap-4">
+                  <span class="font-serif text-vermilion">{String(index + 1).padStart(2, '0')}</span>
+                  <span>{tip}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="info" class="section-space bg-[#d8cebb]">
+    <div class="container-shell">
+      <div class="grid gap-12 lg:grid-cols-[.8fr_1.2fr] lg:gap-20">
+        <div class="reveal">
+          <span class="eyebrow">{content.info.eyebrow}</span>
+          <h2 class="display-title text-4xl md:text-5xl">{content.info.title}</h2>
+          <p class="mt-6 max-w-md text-sm leading-8 text-ink/62 md:text-base">{content.info.text}</p>
+        </div>
+
+        <div class="reveal grid gap-px border border-ink/12 bg-ink/12 sm:grid-cols-2" style="transition-delay: 100ms">
+          {content.info.cards.map((card) => <InfoCard card={card} />)}
+        </div>
+      </div>
+
+      <div class="mt-12 grid gap-6 md:grid-cols-3">
+        {
+          content.info.official.map((link) => (
+            <a
+              href={link.url === 'MAP' ? jigokuNozokiLocation.googleMapsUrl : link.url}
+              target="_blank"
+              rel="noreferrer"
+              class:list={[
+                'group border border-ink/12 p-6 transition hover:-translate-y-1 hover:shadow-soft',
+                link.url === 'MAP' ? 'bg-forest text-white' : 'bg-[#eee8dc]',
+              ]}
+            >
+              <span class:list={['text-[10px] tracking-[.15em]', link.url === 'MAP' ? 'text-white/45' : 'text-ink/45']}>{link.label}</span>
+              <div class="mt-4 flex items-center justify-between gap-4">
+                <strong class="font-serif text-xl font-medium">{link.title}</strong>
+                <span class="transition group-hover:translate-x-1">↗</span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+
+      <div class="reveal mt-12 overflow-hidden border border-ink/12 bg-[#eee8dc]">
+        <div class="grid lg:grid-cols-[.72fr_1.28fr]">
+          <div class="flex flex-col justify-center p-7 md:p-10">
+            <span class="eyebrow">{content.info.location.eyebrow}</span>
+            <h3 class="mt-4 font-serif text-3xl font-medium">{content.info.location.title}</h3>
+            <address class="mt-6 not-italic text-sm leading-7 text-ink/62 md:text-base">
+              <span class="block font-medium text-ink/80">{jigokuNozokiLocation.fullAddress}</span>
+              <span class="block">{jigokuNozokiLocation.fullAddressEn}</span>
+              <span class="block">{jigokuNozokiLocation.locationNote}</span>
+            </address>
+            <dl class="mt-5 grid gap-2 text-xs leading-6 text-ink/60">
+              <div class="flex gap-3"><dt class="font-semibold text-ink/75">{t.phoneLabel}</dt><dd>{jigokuNozokiLocation.telephone}</dd></div>
+              <div class="flex gap-3"><dt class="font-semibold text-ink/75">{t.plusCodeLabel}</dt><dd>{jigokuNozokiLocation.plusCode}</dd></div>
+              <div class="flex gap-3"><dt class="font-semibold text-ink/75">{t.ratingLabel}</dt><dd>{ratingText}</dd></div>
+            </dl>
+            <p class="mt-4 text-xs leading-6 text-ink/48">{content.info.location.note}</p>
+            <p class="mt-2 text-xs leading-6 text-ink/48">{content.info.ratingNote}</p>
+            <a
+              href={jigokuNozokiLocation.googleMapsUrl}
+              target="_blank"
+              rel="noreferrer"
+              class="mt-7 inline-flex w-fit items-center gap-2 border-b border-ink/35 pb-1 text-sm font-semibold text-ink/72 transition hover:border-vermilion hover:text-vermilion"
+            >
+              {content.info.location.linkText} <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+
+          <div class="relative min-h-[360px] border-t border-ink/12 lg:min-h-[460px] lg:border-l lg:border-t-0">
+            <iframe
+              src={jigokuNozokiLocation.googleMapsEmbedUrl}
+              title={content.info.location.title}
+              width="600"
+              height="450"
+              class="absolute inset-0 h-full w-full border-0"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-ink/10 bg-[#ece5d8] py-14 md:py-16">
+    <div class="container-shell">
+      <h2 class="display-title text-3xl md:text-4xl">{t.footer.explore}</h2>
+      <div class="mt-8 grid gap-5 md:grid-cols-2">
+        <a href={accessHref} class="group border border-ink/12 bg-washi p-6 transition hover:-translate-y-1 hover:shadow-soft md:p-8">
+          <span class="text-[10px] tracking-[.16em] text-vermilion">GUIDE 01</span>
+          <h3 class="mt-3 font-serif text-2xl font-medium">{t.footer.access}</h3>
+          <p class="mt-3 text-sm leading-7 text-ink/60">{t.accessLink}</p>
+          <span class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-ink/72 transition group-hover:text-vermilion">
+            {t.footer.access}<span class="transition group-hover:translate-x-1" aria-hidden="true">↗</span>
+          </span>
+        </a>
+        <a href={guideHref} class="group border border-ink/12 bg-washi p-6 transition hover:-translate-y-1 hover:shadow-soft md:p-8">
+          <span class="text-[10px] tracking-[.16em] text-vermilion">GUIDE 02</span>
+          <h3 class="mt-3 font-serif text-2xl font-medium">{t.footer.guide}</h3>
+          <p class="mt-3 text-sm leading-7 text-ink/60">{t.guideLink}</p>
+          <span class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-ink/72 transition group-hover:text-vermilion">
+            {t.footer.guide}<span class="transition group-hover:translate-x-1" aria-hidden="true">↗</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <FAQ
+    eyebrow={content.faq.eyebrow}
+    title={content.faq.title}
+    text={content.faq.text}
+    items={content.faq.items}
+  />
+</main>
+
+<script>
+  const revealElements = document.querySelectorAll<HTMLElement>('.reveal');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+    revealElements.forEach((element) => element.classList.add('is-visible'));
+  } else {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px' });
+
+    revealElements.forEach((element) => observer.observe(element));
+  }
+</script>

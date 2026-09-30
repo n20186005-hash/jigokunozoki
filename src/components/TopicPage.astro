@@ -1,0 +1,97 @@
+---
+import { jigokuNozokiLocation } from '../data/site';
+import { getTopic, topicSlugs, type TopicSlug } from '../content/topics';
+import { pagePath, ui, type Locale } from '../i18n';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import FAQ from './FAQ.astro';
+
+interface Props {
+  locale: Locale;
+  slug: TopicSlug;
+}
+
+const { locale, slug } = Astro.props;
+const topic = getTopic(slug, locale);
+const t = ui[locale];
+const home = pagePath(locale);
+const otherSlugs = topicSlugs.filter((item) => item !== slug);
+---
+
+<Header locale={locale} path={slug} />
+<main id="main" class="bg-washi pb-24 pt-36">
+  <article class="container-shell max-w-3xl">
+    <nav class="text-xs text-ink/45" aria-label={t.footer.home}>
+      <a class="underline underline-offset-4 hover:text-ink" href={home}>{t.homeLink}</a>
+      <span class="mx-2" aria-hidden="true">/</span>
+      <span>{topic.heading}</span>
+    </nav>
+
+    <span class="eyebrow mt-8">{topic.eyebrow}</span>
+    <h1 class="display-title text-4xl md:text-5xl">{topic.heading}</h1>
+    <p class="mt-6 text-sm leading-8 text-ink/70 md:text-base">{topic.lead}</p>
+
+    <div class="mt-12 space-y-10">
+      {
+        topic.blocks.map((block) => (
+          <section>
+            <h2 class="font-serif text-2xl font-medium md:text-3xl">{block.heading}</h2>
+            {block.paragraphs && (
+              <div class="mt-4 space-y-4 text-sm leading-8 text-ink/65 md:text-base">
+                {block.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+              </div>
+            )}
+            {block.steps && (
+              <ol class="mt-5 space-y-3 text-sm leading-7 text-ink/65 md:text-base">
+                {block.steps.map((step, stepIndex) => (
+                  <li class="flex gap-4 border-l-2 border-vermilion/50 pl-4">
+                    <span class="font-serif text-vermilion">{String(stepIndex + 1).padStart(2, '0')}</span>
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ol>
+            )}
+            {block.rows && (
+              <dl class="mt-5 divide-y divide-ink/12 border-y border-ink/12 text-sm">
+                {block.rows.map((row) => (
+                  <div class="flex flex-col gap-1 py-4 sm:flex-row sm:items-center sm:justify-between">
+                    <dt class="text-ink/60">{row.label}</dt>
+                    <dd class="font-serif text-lg">{row.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </section>
+        ))
+      }
+    </div>
+
+    <p class="mt-12 border-l-2 border-vermilion bg-vermilion/5 px-4 py-3 text-xs leading-6 text-ink/60">{topic.caution}</p>
+
+    <div class="mt-12 flex flex-wrap gap-3">
+      <a href={jigokuNozokiLocation.googleMapsUrl} target="_blank" rel="noreferrer" class="rounded-full bg-vermilion px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#934235]">{t.openMap} ↗</a>
+      <a href={jigokuNozokiLocation.officialUrl} target="_blank" rel="noreferrer" class="rounded-full border border-ink/20 px-5 py-3 text-sm text-ink/70 transition hover:bg-forest hover:text-white">{t.footer.official}</a>
+    </div>
+  </article>
+
+  <FAQ eyebrow="FAQ" title={t.nav.faq} items={topic.faq} />
+
+  <section class="container-shell max-w-3xl pb-4">
+    <h2 class="display-title text-2xl md:text-3xl">{topic.relatedTitle}</h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+      <a href={home} class="group border border-ink/12 bg-white/60 p-5 transition hover:-translate-y-1 hover:shadow-soft">
+        <span class="text-[10px] tracking-[.16em] text-vermilion">GUIDE 00</span>
+        <h3 class="mt-2 font-serif text-xl font-medium">{t.footer.home}</h3>
+      </a>
+      {
+        otherSlugs.map((otherSlug) => (
+          <a href={pagePath(locale, otherSlug)} class="group border border-ink/12 bg-white/60 p-5 transition hover:-translate-y-1 hover:shadow-soft">
+            <span class="text-[10px] tracking-[.16em] text-vermilion">GUIDE 01</span>
+            <h3 class="mt-2 font-serif text-xl font-medium">{getTopic(otherSlug, locale).heading}</h3>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</main>
+<Footer locale={locale} />
