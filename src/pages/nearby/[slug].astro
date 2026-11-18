@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NearbyPage from '../../components/NearbyPage.astro';
+import { getNearby } from '../../content/nearby';
+import { siteNames } from '../../data/site';
+const locale = 'ja' as const;
+const place = getNearby(Astro.params.slug || '');
+if (!place) return Astro.redirect('/404');
+const copy = place.copy[locale];
+---
+<BaseLayout locale={locale} path={`nearby/${place.slug}`} title={`${copy.name}｜見どころ・行き方・散策 | ${siteNames[locale]}`} description={`${copy.intro} ${copy.tagline}`} image={place.image}>
+  <NearbyPage locale={locale} place={place} />
+</BaseLayout>

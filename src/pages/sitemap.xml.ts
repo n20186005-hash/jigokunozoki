@@ -2,9 +2,10 @@ import type { APIRoute } from 'astro';
 import { SITE_URL } from '../data/site';
 import { hreflangAlternates, locales, pagePath } from '../i18n';
 import { topicSlugs } from '../content/topics';
+import { nearbySlugs } from '../content/nearby';
 
 /** 三语都有的页面（首页 + 专题页） */
-const localizedPaths = ['', ...topicSlugs];
+const localizedPaths = ['', ...topicSlugs, ...nearbySlugs.map(slug => `nearby/${slug}`)];
 /** 只有日语的页面 */
 const singleLocalePaths = ['privacy', 'photo-credits'];
 

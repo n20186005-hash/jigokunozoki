@@ -7,6 +7,7 @@ import VisitPlanner from './VisitPlanner.astro';
 import CostCalculator from './CostCalculator.astro';
 import FAQ from './FAQ.astro';
 import InfoCard from './InfoCard.astro';
+import { nearbyPlaces } from '../content/nearby';
 
 interface Props {
   locale: Locale;
@@ -272,6 +273,22 @@ const guideHref = pagePath(locale, 'guide');
             {t.footer.guide}<span class="transition group-hover:translate-x-1" aria-hidden="true">↗</span>
           </span>
         </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="nearby" class="section-space border-y border-ink/10 bg-[#eee8dc]">
+    <div class="container-shell">
+      <span class="eyebrow">EXPLORE NOKOGIRIYAMA</span>
+      <h2 class="display-title text-4xl md:text-5xl">{{ ja: '鋸山の周辺スポット', en: 'Explore Mount Nokogiri', zh: '探索鋸山周邊景點' }[locale]}</h2>
+      <p class="mt-5 max-w-3xl text-sm leading-8 text-ink/60">{{ ja: '日本寺の石仏、ロープウェー、採石場跡をそれぞれ詳しく紹介します。山頂と中腹の高低差を考えながら旅程を組みましょう。', en: 'Explore the temple sculptures, ropeway and quarry heritage in separate guides. Factor in the steep elevation changes when planning a walk.', zh: '分別認識日本寺石佛、鋸山纜車與採石遺跡；規劃時請留意山頂及山腰的高低差。' }[locale]}</p>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {nearbyPlaces.map(place => (
+          <a href={pagePath(locale, `nearby/${place.slug}`)} class="group border border-ink/10 bg-washi transition hover:-translate-y-1 hover:shadow-soft">
+            <div class="image-frame aspect-[4/3]"><img src={place.image} alt={place.copy[locale].name} loading="lazy" width="600" height="450" class="h-full w-full object-cover" /></div>
+            <div class="p-5"><h3 class="font-serif text-xl font-medium">{place.copy[locale].name}</h3><p class="mt-2 text-sm leading-6 text-ink/55">{place.copy[locale].tagline}</p><span class="mt-4 inline-block text-xs text-vermilion">READ MORE ↗</span></div>
+          </a>
+        ))}
       </div>
     </div>
   </section>

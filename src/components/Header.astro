@@ -7,15 +7,17 @@ interface Props {
   path?: string;
   /** 单语页面（隐私政策等）设为 false，避免链接到不存在的语言版本 */
   showLanguages?: boolean;
+  mapUrl?: string;
 }
 
-const { locale, path = '', showLanguages = true } = Astro.props;
+const { locale, path = '', showLanguages = true, mapUrl = jigokuNozokiLocation.googleMapsUrl } = Astro.props;
 const t = ui[locale];
 const home = pagePath(locale);
 const sectionLinks = [
   { href: '#about', label: t.nav.highlights },
   { href: '#plan', label: t.nav.access },
   { href: '#course', label: t.nav.course },
+  { href: '#nearby', label: { ja: '周辺', en: 'Explore', zh: '周邊景點' }[locale] },
   { href: '#info', label: t.nav.info },
   { href: '#faq', label: t.nav.faq },
 ];
@@ -62,7 +64,7 @@ const sectionLinks = [
         </nav>
       )}
       <a
-        href={jigokuNozokiLocation.googleMapsUrl}
+        href={mapUrl}
         target="_blank"
         rel="noreferrer"
         class="hidden rounded-full border border-white/25 px-4 py-2 text-xs font-semibold tracking-wider transition hover:bg-white hover:text-forest sm:inline-flex"
