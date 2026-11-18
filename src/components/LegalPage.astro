@@ -1,0 +1,52 @@
+---
+import { pagePath, type Locale } from '../i18n';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+type Slug = 'privacy-policy' | 'terms-of-service' | 'cookie-settings' | 'sources';
+const { locale, slug } = Astro.props as { locale: Locale; slug: Slug };
+const content = {
+  ja: {
+    'privacy-policy': { title: 'プライバシーポリシー', lead: '当サイトにおける情報の取り扱いについて説明します。', blocks: [['収集する情報', '当サイトは会員登録・予約フォームを設けていません。配信とセキュリティのため、ホスティング事業者が技術的なアクセスログを処理する場合があります。'], ['アクセス解析', 'Google Analytics 4は任意の同意を得た場合のみ読み込みます。Cookie設定ページからいつでも変更できます。'], ['外部サービス', 'Google マップを開く場合や埋め込みを表示する場合、外部サービスにブラウザ情報等が送られる場合があります。各サービスのプライバシーポリシーをご確認ください。'], ['改定', '本方針は利用サービスや法令等の変更に応じて見直します。']] },
+    'terms-of-service': { title: '利用規約', lead: '地獄のぞき・鋸山観光情報をご利用いただく際のご案内です。', blocks: [['情報の目的', '当サイトは独立した旅行情報ガイドです。日本寺・行政機関・交通事業者の公式サイトではありません。'], ['情報の更新', '営業時間、料金、運行・通行規制は変わる場合があります。お出かけ前に公式発表をご確認ください。'], ['外部リンク', '外部サイトの内容・サービスは各運営者の責任で提供されています。'], ['コンテンツ', '文章の無断転載はご遠慮ください。写真の著作権・利用条件は個別の写真クレジットをご参照ください。']] },
+    'cookie-settings': { title: 'Cookie 設定', lead: 'アクセス解析の利用を選択できます。設定はこのブラウザに保存され、後から変更できます。', blocks: [['必須の機能', 'ページ表示とセキュリティに必要な処理は停止できません。'], ['任意のアクセス解析', 'Google Analytics 4は同意した場合にのみ読み込まれます。拒否しても観光情報を閲覧できます。']] },
+    sources: { title: '情報源・更新履歴', lead: '参拝情報・写真・交通に関する出典をまとめています。', blocks: [['写真クレジット', '掲載写真の作者、原作品、Creative Commonsライセンスは写真クレジットの独立ページにまとめています。'], ['参拝時間・料金', '日本寺の公式案内を基に更新しています。変更される場合があるため、訪問当日の案内をご確認ください。'], ['ロープウェー', '運行時間・運賃・運休情報は鋸山ロープウェー公式サイトをご確認ください。']] },
+  },
+  en: {
+    'privacy-policy': { title: 'Privacy Policy', lead: 'How this independent travel guide handles information.', blocks: [['Information processed', 'We provide no account registration or booking form. Our hosting provider may process technical access logs for delivery and security.'], ['Analytics', 'Google Analytics 4 loads only after your optional consent. You may change the choice on the Cookie Settings page.'], ['External services', 'Opening or embedding Google Maps and other external services may share browser information with those providers. Check their own privacy notices.'], ['Updates', 'This notice may change when laws or services change.']] },
+    'terms-of-service': { title: 'Terms of Service', lead: 'Conditions for using the Jigoku Nozoki travel guide.', blocks: [['Purpose', 'This is an independent visitor guide, not the official website of Nihon-ji, a public authority or a transport operator.'], ['Accuracy', 'Hours, prices, transport and trail access may change. Check the official operator before travelling.'], ['External links', 'Third-party websites are provided under their own terms and responsibility.'], ['Content', 'Please do not republish our writing without permission. See the separate photo credits for image authors and terms.']] },
+    'cookie-settings': { title: 'Cookie Settings', lead: 'Choose whether optional website analytics may run. You can change this preference here at any time.', blocks: [['Essential functions', 'Technical processing necessary for page delivery and security cannot be switched off here.'], ['Optional analytics', 'Google Analytics 4 is loaded only with consent. Declining does not prevent you from reading the guide.']] },
+    sources: { title: 'Sources and Updates', lead: 'Sources for photography, visitor information and transport.', blocks: [['Photo credits', 'Authors, original files and Creative Commons licences are listed on the separate photo-credits page.'], ['Temple hours and fees', 'We refer to Nihon-ji official information. Check the current notice before your visit.'], ['Ropeway', 'Check the operator for current service, fares and weather-related suspensions.']] },
+  },
+  zh: {
+    'privacy-policy': { title: '隱私政策', lead: '說明本站如何處理網站使用資訊與外部服務。', blocks: [['資料處理', '本站沒有會員註冊或預訂表單。網站託管服務可能為傳輸與安全目的處理技術性存取紀錄。'], ['網站分析', 'Google Analytics 4 只有在您同意後才會載入。可隨時到 Cookie 設定頁變更。'], ['外部服務', '開啟或載入 Google 地圖等第三方服務時，瀏覽器資訊可能傳送給服務供應商。請查閱其隱私政策。'], ['政策更新', '因法規或使用服務變更，本站可能調整本政策。']] },
+    'terms-of-service': { title: '服務條款', lead: '使用地獄窺視與鋸山旅遊指南前，請了解以下事項。', blocks: [['網站性質', '本站為獨立旅遊資訊指南，並非日本寺、政府或交通營運單位官方網站。'], ['資訊變動', '開放時間、門票、交通與步道限制可能調整，出發前請以各主管單位最新公告為準。'], ['外部連結', '第三方網站的內容與服務由各營運者負責。'], ['文字與照片', '請勿擅自轉載本站文章；照片作者、原始作品及授權條件列於獨立圖片版權頁。']] },
+    'cookie-settings': { title: 'Cookie 設定', lead: '您可決定是否允許非必要的網站分析，並隨時在此更改。', blocks: [['必要功能', '網站傳輸及安全所需的技術處理無法在此停用。'], ['選用網站分析', '只有在您同意時才載入 Google Analytics 4。拒絕不會影響旅遊資訊瀏覽。']] },
+    sources: { title: '資料來源與更新', lead: '集中列出照片、參拜資訊與交通的參考來源。', blocks: [['圖片版權', '照片的作者、原始檔案及 Creative Commons 授權資訊，請參閱獨立圖片版權頁。'], ['參拜時間與門票', '資訊依日本寺官方公告整理；造訪前請核對當日開放與收費。'], ['纜車營運', '纜車票價、營運與天候停駛情形請以鋸山纜車官方資訊為準。']] },
+  },
+}[locale][slug];
+const linkLabels = { ja: ['写真クレジット', '日本寺公式', '鋸山ロープウェー公式'], en: ['Photo credits', 'Nihon-ji official', 'Ropeway official'], zh: ['圖片版權', '日本寺官方', '鋸山纜車官方'] }[locale];
+---
+<Header locale={locale} path={slug} />
+<main id="main" class="min-h-screen bg-washi pb-24 pt-36">
+  <article class="container-shell max-w-3xl">
+    <a href={pagePath(locale)} class="text-xs text-ink/50 underline underline-offset-4">← {locale === 'ja' ? 'トップ' : locale === 'en' ? 'Home' : '首頁'}</a>
+    <span class="eyebrow mt-9">{slug === 'sources' ? 'SOURCES' : 'LEGAL'}</span>
+    <h1 class="display-title text-4xl md:text-5xl">{content.title}</h1>
+    <p class="mt-6 text-sm leading-8 text-ink/65 md:text-base">{content.lead}</p>
+    <div class="mt-10 space-y-9 text-sm leading-8 text-ink/65 md:text-base">
+      {content.blocks.map(block => <section><h2 class="font-serif text-2xl text-ink">{block[0]}</h2><p class="mt-3">{block[1]}</p></section>)}
+    </div>
+    {slug === 'sources' && <div class="mt-10 flex flex-wrap gap-5 text-sm underline underline-offset-4"><a href="/photo-credits">{linkLabels[0]}</a><a href="https://www.nihonji.jp/" target="_blank" rel="noreferrer">{linkLabels[1]} ↗</a><a href="https://www.mt-nokogiri.co.jp/" target="_blank" rel="noreferrer">{linkLabels[2]} ↗</a></div>}
+    {slug === 'cookie-settings' && <section class="mt-10 border border-ink/15 bg-white/60 p-6"><h2 class="font-serif text-xl">Google Analytics 4</h2><p id="cookie-status" role="status" class="mt-3 text-sm text-ink/65" aria-live="polite"></p><div class="mt-5 flex flex-wrap gap-3"><button type="button" data-consent="granted" class="rounded-full bg-forest px-5 py-3 text-sm text-white">{locale === 'ja' ? '同意する' : locale === 'en' ? 'Allow analytics' : '同意分析'}</button><button type="button" data-consent="denied" class="rounded-full border border-ink/20 px-5 py-3 text-sm">{locale === 'ja' ? '拒否する' : locale === 'en' ? 'Decline analytics' : '拒絕分析'}</button></div></section>}
+    {slug !== 'sources' && <p class="mt-12 text-xs text-ink/45">{locale === 'ja' ? '最終更新：2026年11月18日' : locale === 'en' ? 'Last updated: 18 November 2026' : '最後更新：2026 年 11 月 18 日'}</p>}
+  </article>
+</main>
+<Footer locale={locale} />
+{slug === 'cookie-settings' && <script>
+  const status = document.querySelector<HTMLElement>('#cookie-status');
+  const messages = { ja: ['アクセス解析を許可しています。', 'アクセス解析を拒否しています。', 'まだ選択されていません。'], en: ['Analytics is allowed.', 'Analytics is declined.', 'No choice saved yet.'], zh: ['已同意網站分析。', '已拒絕網站分析。', '尚未儲存選擇。'] };
+  const language = document.documentElement.lang.startsWith('ja') ? 'ja' : document.documentElement.lang.startsWith('en') ? 'en' : 'zh';
+  function refresh() { try { const choice = localStorage.getItem('jigoku-analytics-consent'); if (status) status.textContent = messages[language][choice === 'granted' ? 0 : choice === 'denied' ? 1 : 2]; } catch { if (status) status.textContent = messages[language][2]; } }
+  document.querySelectorAll<HTMLButtonElement>('[data-consent]').forEach(button => button.addEventListener('click', () => { try { localStorage.setItem('jigoku-analytics-consent', button.dataset.consent || 'denied'); location.reload(); } catch { refresh(); } }));
+  refresh();
+</script>}

@@ -46,15 +46,19 @@ const website = buildWebSite(locale);
 <!doctype html>
 <html lang={meta.htmlLang}>
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP"></script>
     <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'G-HXM22WWPKP');
+      try {
+        if (localStorage.getItem('jigoku-analytics-consent') === 'granted') {
+          const s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP';
+          document.head.appendChild(s);
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){ dataLayer.push(arguments); }
+          gtag('js', new Date());
+          gtag('config', 'G-HXM22WWPKP');
+        }
+      } catch (_) { /* Storage may be disabled. */ }
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

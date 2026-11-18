@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalPage from '../components/LegalPage.astro';
+import { siteNames } from '../data/site';
+const locale = 'ja' as const;
+const allowed = ['privacy-policy', 'terms-of-service', 'cookie-settings', 'sources'];
+const slug = Astro.params.legal || '';
+if (!allowed.includes(slug)) return Astro.redirect('/404');
+---
+<BaseLayout locale={locale} path={slug} title={`${slug} | ${siteNames[locale]}`}><LegalPage locale={locale} slug={slug} /></BaseLayout>

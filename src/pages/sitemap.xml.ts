@@ -5,7 +5,7 @@ import { topicSlugs } from '../content/topics';
 import { nearbySlugs } from '../content/nearby';
 
 /** 三语都有的页面（首页 + 专题页） */
-const localizedPaths = ['', ...topicSlugs, ...nearbySlugs.map(slug => `nearby/${slug}`)];
+const localizedPaths = ['', ...topicSlugs, ...nearbySlugs.map(slug => `nearby/${slug}`), 'privacy-policy', 'terms-of-service', 'cookie-settings', 'sources'];
 /** 只有日语的页面 */
 const singleLocalePaths = ['privacy', 'photo-credits'];
 

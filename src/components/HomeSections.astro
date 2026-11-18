@@ -209,6 +209,11 @@ const guideHref = pagePath(locale, 'guide');
         }
       </div>
 
+      <div class="mt-7 flex flex-wrap gap-x-7 gap-y-2 text-xs text-ink/65">
+        <a class="underline underline-offset-4 hover:text-vermilion" href={pagePath(locale, 'sources')}>{locale === 'ja' ? '情報源・更新履歴' : locale === 'en' ? 'Sources and updates' : '資料來源與更新'}</a>
+        <a class="underline underline-offset-4 hover:text-vermilion" href="/photo-credits">{t.footer.photoCredits}</a>
+      </div>
+
       <div class="reveal mt-12 overflow-hidden border border-ink/12 bg-[#eee8dc]">
         <div class="grid lg:grid-cols-[.72fr_1.28fr]">
           <div class="flex flex-col justify-center p-7 md:p-10">

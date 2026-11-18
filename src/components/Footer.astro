@@ -1,58 +1,26 @@
 ---
-import { jigokuNozokiLocation } from '../data/site';
-import { getGuide } from '../content/guide';
-import { pagePath, ui, type Locale } from '../i18n';
+import { shortBrand } from '../data/site';
+import { pagePath, type Locale } from '../i18n';
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
-const t = ui[locale];
-const guide = getGuide(locale);
-const home = pagePath(locale);
+const labels = {
+  ja: ['プライバシーポリシー', '利用規約', 'Cookie 設定'],
+  en: ['Privacy Policy', 'Terms of Service', 'Cookie Settings'],
+  zh: ['隱私政策', '服務條款', 'Cookie 設定'],
+}[locale];
 ---
 
 <footer class="bg-[#121b16] text-white">
-  <div class="container-shell py-16 md:py-20">
-    <div class="grid gap-12 border-b border-white/12 pb-14 lg:grid-cols-[1fr_auto] lg:items-end">
-      <div>
-        <p class="text-xs tracking-[.25em] text-[#d7b675]">JIGOKU NOZOKI</p>
-        <h2 class="mt-4 font-serif text-4xl font-medium md:text-5xl">{guide.hero.title}</h2>
-        <p class="mt-4 max-w-lg text-sm leading-7 text-white/55">{guide.footer.description}</p>
-        <nav class="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm" aria-label={t.footer.explore}>
-          <a class="text-white/70 underline underline-offset-4 transition hover:text-white" href={home}>{t.footer.home}</a>
-          <a class="text-white/70 underline underline-offset-4 transition hover:text-white" href={pagePath(locale, 'access')}>{t.footer.access}</a>
-          <a class="text-white/70 underline underline-offset-4 transition hover:text-white" href={pagePath(locale, 'guide')}>{t.footer.guide}</a>
-        </nav>
-      </div>
-      <div class="flex flex-wrap gap-3">
-        <a href={jigokuNozokiLocation.officialUrl} target="_blank" rel="noreferrer" class="rounded-full border border-white/20 px-5 py-3 text-sm text-white/70 transition hover:bg-white hover:text-forest">{t.footer.official}</a>
-        <a href={jigokuNozokiLocation.ropewayUrl} target="_blank" rel="noreferrer" class="rounded-full border border-white/20 px-5 py-3 text-sm text-white/70 transition hover:bg-white hover:text-forest">{t.footer.ropeway}</a>
-        <a href={jigokuNozokiLocation.googleMapsUrl} target="_blank" rel="noreferrer" class="rounded-full bg-vermilion px-5 py-3 text-sm font-semibold transition hover:bg-[#934235]">{t.footer.map}</a>
-      </div>
-    </div>
-
-    <div class="grid gap-8 py-10 text-xs leading-6 text-white/42 md:grid-cols-2">
-      <div>
-        <p class="font-semibold text-white/65">{t.footer.photoCredits}</p>
-        <p class="mt-2">
-          {guide.footer.photoNote}
-          <a class="underline underline-offset-4 hover:text-white" href="/photo-credits">{t.footer.photoCredits}</a>
-        </p>
-      </div>
-      <div>
-        <p class="font-semibold text-white/65">{t.footer.update}</p>
-        <p class="mt-2">{guide.footer.updateNote}</p>
-      </div>
-    </div>
-
-    <div class="flex flex-col gap-3 border-t border-white/10 pt-6 text-[11px] tracking-wide text-white/35 sm:flex-row sm:items-center sm:justify-between">
-      <p>© {new Date().getFullYear()} JigokuNozoki.com</p>
-      <div class="flex gap-5">
-        <a href="/photo-credits" class="hover:text-white">{t.footer.photoCredits}</a>
-        <a href="/privacy" class="hover:text-white">{t.footer.privacy}</a>
-      </div>
-    </div>
+  <div class="container-shell flex flex-col gap-5 py-10 text-xs sm:flex-row sm:items-center sm:justify-between">
+    <p class="text-white/65">© {new Date().getFullYear()} {shortBrand[locale]} · {locale === 'ja' ? '無断転載を禁じます' : locale === 'en' ? 'All rights reserved' : '版權所有'}</p>
+    <nav class="flex flex-wrap gap-x-6 gap-y-3 text-white/65" aria-label="Legal">
+      <a class="transition hover:text-white" href={pagePath(locale, 'privacy-policy')}>{labels[0]}</a>
+      <a class="transition hover:text-white" href={pagePath(locale, 'terms-of-service')}>{labels[1]}</a>
+      <a class="transition hover:text-white" href={pagePath(locale, 'cookie-settings')}>{labels[2]}</a>
+    </nav>
   </div>
 </footer>
