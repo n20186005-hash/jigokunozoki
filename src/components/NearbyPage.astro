@@ -9,9 +9,9 @@ const { locale, place } = Astro.props as { locale: Locale; place: NearbyPlace };
 const c = place.copy[locale];
 const detail = nearbyDetails[place.slug][locale];
 const word = {
-  ja: { management: 'この場所について', about: '歴史・石の造形と見どころ', visit: '歩き方・見学ルート', info: '基本情報', hours: '開放・運行時間', fee: '拝観料・利用料金', transport: 'アクセス', tips: '見学のポイント', stay: '滞在プラン', photo: '撮影のポイント', faq: 'よくある質問', source: '公式情報・アクセス', map: 'Google マップで場所を確認', official: '公式案内を確認', related: '周辺の見どころ', caution: '営業時間・料金・通行状況は変更される場合があります。出発前に公式案内をご確認ください。', home: 'トップ' },
-  en: { management: 'About this place', about: 'History, architecture and highlights', visit: 'Suggested walking route', info: 'Visitor information', hours: 'Opening and operating hours', fee: 'Admission and fares', transport: 'Getting there', tips: 'Visiting tips', stay: 'Planning your time', photo: 'Photo viewpoints', faq: 'Frequently asked questions', source: 'Official sources and directions', map: 'Find this place on Google Maps', official: 'Check official information', related: 'Explore nearby', caution: 'Hours, fees and trail access can change. Check official notices before travelling.', home: 'Home' },
-  zh: { management: '關於這個景點', about: '歷史、建築地貌與觀察重點', visit: '建議參觀路線', info: '基本資訊', hours: '開放與營運時間', fee: '門票與費用', transport: '交通方式', tips: '遊覽須知', stay: '停留安排', photo: '拍攝機位', faq: '常見問答', source: '官方資料與導航', map: '在 Google 地圖查看地點', official: '查看官方資訊', related: '探索周邊景點', caution: '開放時間、費用與步道狀況可能變動，出發前請查閱管理單位公告。', home: '首頁' },
+  ja: { management: 'この場所について', explore: 'この場所を歩く', highlights: '景観・文化の見どころ', about: '歴史・石の造形と見どころ', visit: '歩き方・見学ルート', info: '基本情報', hours: '開放・運行時間', fee: '拝観料・利用料金', transport: 'アクセス', tips: '見学のポイント', stay: '滞在・宿泊のヒント', reviews: '訪問者の評価・口コミ', location: '所在地', operator: '管理主体', photo: '撮影のポイント', faq: 'よくある質問', source: '公式情報・アクセス', map: 'Google マップで場所を確認', official: '公式案内を確認', related: '周辺の見どころ', caution: '営業時間・料金・通行状況は変更される場合があります。出発前に公式案内をご確認ください。', home: 'トップ' },
+  en: { management: 'About this place', explore: 'Discover the place', highlights: 'What to look for', about: 'History, architecture and highlights', visit: 'Suggested walking route', info: 'Visitor information', hours: 'Opening and operating hours', fee: 'Admission and fares', transport: 'Getting there', tips: 'Visiting tips', stay: 'Visiting and accommodation tips', reviews: 'Visitor reviews', location: 'Location', operator: 'Management', photo: 'Photo viewpoints', faq: 'Frequently asked questions', source: 'Official sources and directions', map: 'Find this place on Google Maps', official: 'Check official information', related: 'Explore nearby', caution: 'Hours, fees and trail access can change. Check official notices before travelling.', home: 'Home' },
+  zh: { management: '關於這個景點', explore: '探索景點', highlights: '景區特色與觀察重點', about: '歷史、建築地貌與觀察重點', visit: '建議參觀路線', info: '基本資訊', hours: '開放與營運時間', fee: '門票與費用', transport: '交通方式', tips: '遊覽須知', stay: '停留與住宿建議', reviews: '遊客評價', location: '所在地', operator: '管理主體', photo: '拍攝機位', faq: '常見問答', source: '官方資料與導航', map: '在 Google 地圖查看地點', official: '查看官方資訊', related: '探索周邊景點', caution: '開放時間、費用與步道狀況可能變動，出發前請查閱管理單位公告。', home: '首頁' },
 }[locale];
 ---
 <Header locale={locale} path={`nearby/${place.slug}`} mapUrl={place.map} />
@@ -23,6 +23,7 @@ const word = {
         <span class="eyebrow">NOKOGIRIYAMA · EXPLORE</span>
         <h1 class="display-title text-4xl md:text-6xl">{c.name}</h1>
         <p class="mt-4 font-serif text-xl text-ink/75">{c.tagline}</p>
+        <dl class="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-xs leading-6 text-ink/65"><div><dt class="inline font-semibold">{word.hours}: </dt><dd class="inline">{detail.hours}</dd></div><div><dt class="inline font-semibold">{word.location}: </dt><dd class="inline">{place.location}</dd></div></dl>
         <p class="mt-7 text-sm leading-8 text-ink/65 md:text-base">{c.intro}</p>
         <a href={place.map} target="_blank" rel="noreferrer" class="mt-7 inline-flex rounded-full bg-vermilion px-6 py-3 text-sm font-semibold text-white">{word.map} ↗</a>
       </div>
@@ -33,16 +34,19 @@ const word = {
       <h2 class="mt-3 font-serif text-3xl">{word.management} · {c.name}</h2>
       <p class="mt-5 max-w-4xl text-sm leading-8 text-ink/70 md:text-base">{detail.management}</p>
     </section>
+    <section class="mt-14 grid gap-8 md:grid-cols-[.9fr_1.1fr]">
+      <div><span class="eyebrow">DISCOVER</span><h2 class="mt-3 display-title text-3xl">{word.explore}</h2><p class="mt-5 text-sm leading-8 text-ink/65">{detail.visit}</p></div>
+      <div class="bg-white/60 p-7"><h2 class="font-serif text-2xl">{word.highlights}</h2><ul class="mt-5 space-y-4 text-sm leading-7 text-ink/65">{c.highlights.map((item, i) => <li class="flex gap-4"><span class="font-serif text-vermilion">{String(i+1).padStart(2, '0')}</span>{item}</li>)}</ul></div>
+    </section>
     <div class="mt-16 grid gap-10 border-t border-ink/15 pt-12 lg:grid-cols-[1fr_.65fr]">
       <div>
         <h2 class="display-title text-3xl">{word.about}</h2>
         <p class="mt-5 text-sm leading-8 text-ink/65 md:text-base">{c.history}</p>
         <p class="mt-5 text-sm leading-8 text-ink/65 md:text-base">{detail.architecture}</p>
-        <ul class="mt-6 space-y-3 text-sm leading-7 text-ink/70">{c.highlights.map(item => <li class="border-l-2 border-vermilion/60 pl-4">{item}</li>)}</ul>
       </div>
       <aside class="bg-[#e8e0d2] p-7">
         <h2 class="font-serif text-2xl">{word.info}</h2>
-        <dl class="mt-5 space-y-5 text-sm leading-7"><div><dt class="text-ink/45">Location</dt><dd>{place.location}</dd></div><div><dt class="text-ink/45">Management</dt><dd>{place.operator}</dd></div><div><dt class="text-ink/45">{word.hours}</dt><dd>{detail.hours}</dd></div><div><dt class="text-ink/45">{word.fee}</dt><dd>{detail.fee}</dd></div></dl>
+        <dl class="mt-5 space-y-5 text-sm leading-7"><div><dt class="text-ink/45">{word.location}</dt><dd>{place.location}</dd></div><div><dt class="text-ink/45">{word.operator}</dt><dd>{place.operator}</dd></div><div><dt class="text-ink/45">{word.hours}</dt><dd>{detail.hours}</dd></div><div><dt class="text-ink/45">{word.fee}</dt><dd>{detail.fee}</dd></div></dl>
       </aside>
     </div>
     <section class="mt-14 grid gap-8 md:grid-cols-2">
@@ -51,10 +55,12 @@ const word = {
     </section>
     <section class="mt-16"><h2 class="display-title text-3xl">{word.visit}</h2><ol class="mt-7 space-y-5">{c.route.map((step, i) => <li class="flex gap-5 border-b border-ink/10 pb-5"><span class="font-serif text-2xl text-vermilion">{String(i+1).padStart(2,'0')}</span><p class="text-sm leading-7 text-ink/70">{step}</p></li>)}</ol></section>
     <section class="mt-12"><h2 class="font-serif text-2xl">{word.stay}</h2><p class="mt-4 text-sm leading-8 text-ink/65">{detail.stay}</p></section>
+    <section class="mt-12 border-y border-ink/10 py-9"><h2 class="font-serif text-2xl">{word.reviews}</h2><p class="mt-3 text-sm leading-8 text-ink/65">{locale === 'ja' ? '各地点を訪れた人の感想や写真は、Google マップのスポット情報からご覧いただけます。' : locale === 'en' ? 'See travellers’ impressions and photos on the individual Google Maps place listing.' : '可透過各景點的 Google 地圖地點資訊查看旅客心得與照片。'}</p><a href={place.map} target="_blank" rel="noreferrer" class="mt-3 inline-block text-sm font-semibold text-vermilion underline underline-offset-4">Google Maps ↗</a></section>
     <section class="mt-14 border-l-2 border-vermilion bg-white/55 p-6"><h2 class="font-serif text-2xl">{word.photo}</h2><p class="mt-3 text-sm leading-7 text-ink/65">{c.photo}</p></section>
     <p class="mt-6 text-sm leading-7 text-ink/60">{detail.caution}</p>
     <section class="mt-16"><h2 class="display-title text-3xl">{word.faq}</h2><div class="mt-6 space-y-5">{c.faq.map(item => <div class="border-b border-ink/10 pb-5"><h3 class="font-serif text-xl">{item.q}</h3><p class="mt-2 text-sm leading-7 text-ink/65">{item.a}</p></div>)}</div></section>
     <section class="mt-14 bg-[#e8e0d2] p-7"><h2 class="font-serif text-2xl">{word.source}</h2><p class="mt-3 text-xs leading-6 text-ink/60">{word.caution}</p><div class="mt-5 flex flex-wrap gap-4 text-sm"><a class="underline underline-offset-4" href={place.official} target="_blank" rel="noreferrer">{word.official} ↗</a><a class="underline underline-offset-4" href={place.map} target="_blank" rel="noreferrer">Google Maps ↗</a></div></section>
+    <section class="mt-10 border border-ink/10 bg-white/50 p-6"><h2 class="font-serif text-2xl">{word.transport} · Google Maps</h2><address class="mt-4 text-sm not-italic leading-7 text-ink/70">{place.location}</address><a href={place.map} target="_blank" rel="noreferrer" class="mt-5 inline-flex rounded-full border border-ink/20 px-5 py-3 text-sm hover:bg-forest hover:text-white">{word.map} ↗</a></section>
     <section class="mt-16"><h2 class="display-title text-3xl">{word.related}</h2><div class="mt-6 grid gap-4 sm:grid-cols-2">{nearbyPlaces.filter(p => p.slug !== place.slug).map(p => <a href={pagePath(locale, `nearby/${p.slug}`)} class="group flex items-center gap-4 border border-ink/10 bg-white/60 p-3 hover:shadow-soft"><img src={p.image} alt="" loading="lazy" width="100" height="80" class="h-20 w-24 object-cover"/><span class="font-serif text-lg group-hover:text-vermilion">{p.copy[locale].name} →</span></a>)}</div></section>
   </article>
 </main>

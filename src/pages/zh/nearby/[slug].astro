@@ -3,11 +3,13 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import NearbyPage from '../../../components/NearbyPage.astro';
 import { getNearby } from '../../../content/nearby';
 import { siteNames } from '../../../data/site';
+import { SITE_URL } from '../../../data/site';
 const locale = 'zh' as const;
 const place = getNearby(Astro.params.slug || '');
 if (!place) return Astro.redirect('/404');
 const copy = place.copy[locale];
 ---
-<BaseLayout locale={locale} path={`nearby/${place.slug}`} title={`${copy.name}｜歷史、路線與參觀指南 | ${siteNames[locale]}`} description={`${copy.intro} ${copy.tagline}`} image={place.image}>
+<BaseLayout locale={locale} path={`nearby/${place.slug}`} title={`${copy.name}｜歷史、路線與參觀指南 | ${siteNames[locale]}`} description={`${copy.intro} ${copy.tagline}`} image={place.image} includeMainAttraction={false}>
+  <Fragment slot="head"><script type="application/ld+json" is:inline set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'TouristAttraction', name: copy.name, description: copy.intro, url: `${SITE_URL}/zh/nearby/${place.slug}`, image: `${SITE_URL}${place.image}`, address: { '@type': 'PostalAddress', streetAddress: place.location, addressCountry: 'JP' }, hasMap: place.map })} /></Fragment>
   <NearbyPage locale={locale} place={place} />
 </BaseLayout>

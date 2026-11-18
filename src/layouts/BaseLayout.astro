@@ -14,6 +14,7 @@ interface Props {
   noIndex?: boolean;
   /** false 时只输出该语言自身的 canonical，不输出 hreflang（单语页面用） */
   i18n?: boolean;
+  includeMainAttraction?: boolean;
 }
 
 const {
@@ -24,6 +25,7 @@ const {
   path = '',
   noIndex = false,
   i18n = true,
+  includeMainAttraction = true,
 } = Astro.props;
 
 const guide = getGuide(locale);
@@ -86,7 +88,7 @@ const website = buildWebSite(locale);
         <link rel="alternate" hreflang={alternate.lang} href={alternate.href} />
       ))
     }
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(attraction)} />
+    {includeMainAttraction && <script type="application/ld+json" is:inline set:html={JSON.stringify(attraction)} />}
     <script type="application/ld+json" is:inline set:html={JSON.stringify(website)} />
     <slot name="head" />
   </head>
